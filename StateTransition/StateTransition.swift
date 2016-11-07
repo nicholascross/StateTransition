@@ -7,9 +7,9 @@
 //
 import Foundation
 
-public struct StateMachine<Action:Equatable,State:Hashable> {
+public struct StateMachine<Action:Equatable,State:Hashable, Context> {
     
-    public typealias StateTrigger = (Action,State,State,Any?)->()
+    public typealias StateTrigger = (Action,State,State,Context?)->()
     public typealias StateTransition = (Action,State)
     
     private var stateTransitions: Dictionary<State,[(Action,State)]>
@@ -48,7 +48,7 @@ public struct StateMachine<Action:Equatable,State:Hashable> {
         }
     }
     
-    public mutating func perform(action:Action, withContext context: Any? = nil) {
+    public mutating func perform(action:Action, withContext context: Context? = nil) {
         let oldState = state
         
         if let availableTransitions: [(Action, State)] = stateTransitions[oldState] {

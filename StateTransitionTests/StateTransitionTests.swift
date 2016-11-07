@@ -40,19 +40,19 @@ class StateTransitionTests: XCTestCase {
     
     func testSingleTransition() {
         stateMachine.perform(action: .Increase)
-        XCTAssert(stateMachine.isState(state: .Liquid), "Expected to melt solid to liquid")
+        XCTAssert(stateMachine.currentState == .Liquid, "Expected to melt solid to liquid")
     }
     
     func testAllTransitions() {
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
-        XCTAssert(stateMachine.isState(state: .Plasma), "Expected to melt solid to plasma state")
+        XCTAssert(stateMachine.currentState == .Plasma, "Expected to melt solid to plasma state")
         
         stateMachine.perform(action: .Decrease)
         stateMachine.perform(action: .Decrease)
         stateMachine.perform(action: .Decrease)
-        XCTAssert(stateMachine.isState(state: .Solid), "Expected to freeze plasma to solid state")
+        XCTAssert(stateMachine.currentState == .Solid, "Expected to freeze plasma to solid state")
     }
     
     func testIgnoreInvalidTransitions() {
@@ -62,14 +62,14 @@ class StateTransitionTests: XCTestCase {
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
-        XCTAssert(stateMachine.isState(state: .Plasma), "Expected to melt solid to plasma state")
+        XCTAssert(stateMachine.currentState == .Plasma, "Expected to melt solid to plasma state")
         
         stateMachine.perform(action: .Decrease)
         stateMachine.perform(action: .Decrease)
         stateMachine.perform(action: .Decrease)
         stateMachine.perform(action: .Decrease)
         stateMachine.perform(action: .Decrease)
-        XCTAssert(stateMachine.isState(state: .Solid), "Expected to freeze plasma to solid state")
+        XCTAssert(stateMachine.currentState == .Solid, "Expected to freeze plasma to solid state")
     }
     
     func testTriggerExecution() {

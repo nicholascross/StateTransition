@@ -72,7 +72,7 @@ public struct StateMachine<Action:Equatable,State:Hashable, Context> {
         }
     }
     
-    public func isState(state:State) -> Bool {
-        return self.state == state
+    public var currentState: State {
+        return state
     }
 }

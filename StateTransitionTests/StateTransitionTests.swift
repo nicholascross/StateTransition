@@ -96,4 +96,45 @@ class StateTransitionTests: XCTestCase {
         XCTAssert(frozenFrom == .Liquid, "Expected to be frozen from liquid state")
         XCTAssert(action == .Decrease, "Expected to be frozen by decreasing energy")
     }
+    
+    func testTriggerRemoval() {
+        var isFrozen = false
+        var frozenFrom: StateOfMatter? = nil
+        var action: EnergyTransfer? = nil
+        
+        func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:String?) {
+            isFrozen = true
+            frozenFrom = fromState
+            action = energyTransfer
+        }
+        
+        stateMachine.addTrigger(forState: .Solid, trigger: transitionedToSolid)
+        stateMachine.removeAllTriggers(forState: .Solid)
+        
+        stateMachine.perform(action: .Increase)
+        stateMachine.perform(action: .Increase)
+        stateMachine.perform(action: .Increase)
+        stateMachine.perform(action: .Decrease)
+        stateMachine.perform(action: .Decrease)
+        stateMachine.perform(action: .Decrease, withContext: "It is cold.")
+        
+        XCTAssert(!isFrozen, "Expected to variable to be unchanged by trigger")
+        XCTAssert(frozenFrom == nil, "Expected state change triggered nothing")
+        XCTAssert(action == nil, "Expected action triggered nothing")
+    }
+    
+    func testStateTransitionRemoval() {
+        stateMachine.removeTransition(fromState: .Gas, when: .Increase)
+        stateMachine.removeTransition(fromState: .Liquid, when: .Decrease)
+        
+        stateMachine.perform(action: .Increase)
+        stateMachine.perform(action: .Increase)
+        stateMachine.perform(action: .Increase)
+        XCTAssert(stateMachine.currentState == .Gas, "Expected to vaporise solid to gas state")
+        
+        stateMachine.perform(action: .Decrease)
+        stateMachine.perform(action: .Decrease)
+        stateMachine.perform(action: .Decrease)
+        XCTAssert(stateMachine.currentState == .Liquid, "Expected to condense gas to liquid state")
+    }
 }

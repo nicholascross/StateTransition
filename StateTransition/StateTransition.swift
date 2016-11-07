@@ -36,6 +36,13 @@ public struct StateMachine<Action:Hashable,State:Hashable, Context> {
         }
     }
     
+    public mutating func removeTransition(fromState:State, when action:Action) {
+        if var availableTransitions = self.stateTransitionsForState[fromState] {
+            availableTransitions[action] = nil
+            stateTransitionsForState[fromState] = availableTransitions
+        }
+    }
+    
     public mutating func addTrigger(forState state:State, trigger:@escaping StateTrigger) {
         if var triggersForState = self.triggers[state] {
             triggersForState.append( trigger )
@@ -46,6 +53,10 @@ public struct StateMachine<Action:Hashable,State:Hashable, Context> {
             triggersForState.append( trigger )
             triggers[state] = triggersForState
         }
+    }
+    
+    public mutating func removeAllTriggers(forState state:State) {
+        self.triggers[state] = nil
     }
     
     public mutating func perform(action:Action, withContext context: Context? = nil) {

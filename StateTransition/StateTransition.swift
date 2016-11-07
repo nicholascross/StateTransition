@@ -7,32 +7,32 @@
 //
 import Foundation
 
-public struct StateMachine<Action:Equatable,State:Hashable, Context> {
+public struct StateMachine<Action:Hashable,State:Hashable, Context> {
     
     public typealias StateTrigger = (Action,State,State,Context?)->()
-    public typealias StateTransition = (Action,State)
+    public typealias StateTransitions = [Action:State]
     
-    private var stateTransitions: Dictionary<State,[(Action,State)]>
+    private var stateTransitionsForState: [State:StateTransitions]
     
     private var state: State
     
-    private var triggers: Dictionary<State,[StateTrigger]>
+    private var triggers: [State:[StateTrigger]]
     
     public init(initialState:State) {
         self.state = initialState
-        self.stateTransitions = [State : [StateTransition]]()
+        self.stateTransitionsForState = [State : StateTransitions]()
         self.triggers = [State : [StateTrigger]]()
     }
     
     public mutating func addTransition(fromState:State, toState:State, when action:Action) {
-        if var availableTransitions: [(Action, State)] = self.stateTransitions[fromState] {
-            availableTransitions.append( (action,toState) )
-            stateTransitions[fromState] = availableTransitions
+        if var availableTransitions = self.stateTransitionsForState[fromState] {
+            availableTransitions[action] = toState
+            stateTransitionsForState[fromState] = availableTransitions
         }
         else {
-            var availableTransitions: [(Action, State)] = Array<(Action, State)>()
-            availableTransitions.append( (action,toState) )
-            stateTransitions[fromState] = availableTransitions
+            var availableTransitions = StateTransitions()
+            availableTransitions[action] = toState
+            stateTransitionsForState[fromState] = availableTransitions
         }
     }
     
@@ -51,22 +51,12 @@ public struct StateMachine<Action:Equatable,State:Hashable, Context> {
     public mutating func perform(action:Action, withContext context: Context? = nil) {
         let oldState = state
         
-        if let availableTransitions: [(Action, State)] = stateTransitions[oldState] {
-            
-            for t in availableTransitions {
-                switch t {
-                case (let a, let s) where a == action:
+        if let availableTransitions = stateTransitionsForState[oldState], let s = availableTransitions[action] {
+            state = s
                     
-                    state = s
-                    
-                    if let stateTriggers = self.triggers[s] {
-                        for trigger in stateTriggers {
-                            trigger(a, oldState, s, context)
-                        }
-                    }
-                    
-                default:
-                    break
+            if let stateTriggers = self.triggers[s] {
+                for trigger in stateTriggers {
+                    trigger(action, oldState, s, context)
                 }
             }
         }

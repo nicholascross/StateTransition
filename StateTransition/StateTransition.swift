@@ -7,42 +7,24 @@
 //
 import Foundation
 
-//todo: remove this hack once compiler error is fixed
-public struct StateWrapper<S> {
-    var wrappedState: [S]
+public struct StateMachine<Action:Equatable,State:Hashable> {
     
-    init(_ state: S) {
-        wrappedState = [state]
-    }
-    
-    var state: S {
-        get {
-            return wrappedState[0]
-        }
-        set (state) {
-            wrappedState[0] = state
-        }
-    }
-}
-
-public class StateMachine<Action:Equatable,State:Hashable> {
-    
-    public typealias StateTrigger = (Action,State,State,AnyObject?)->()
+    public typealias StateTrigger = (Action,State,State,Any?)->()
     public typealias StateTransition = (Action,State)
     
     private var stateTransitions: Dictionary<State,[(Action,State)]>
     
-    private var state: StateWrapper<State>
+    private var state: State
     
     private var triggers: Dictionary<State,[StateTrigger]>
     
     public init(initialState:State) {
-        self.state = StateWrapper(initialState)
+        self.state = initialState
         self.stateTransitions = [State : [StateTransition]]()
         self.triggers = [State : [StateTrigger]]()
     }
     
-    public func addTransition(fromState:State, toState:State, when action:Action) {
+    public mutating func addTransition(fromState:State, toState:State, when action:Action) {
         if var availableTransitions: [(Action, State)] = self.stateTransitions[fromState] {
             availableTransitions.append( (action,toState) )
             stateTransitions[fromState] = availableTransitions
@@ -54,7 +36,7 @@ public class StateMachine<Action:Equatable,State:Hashable> {
         }
     }
     
-    public func addTrigger(forState state:State, trigger:@escaping StateTrigger) {
+    public mutating func addTrigger(forState state:State, trigger:@escaping StateTrigger) {
         if var triggersForState = self.triggers[state] {
             triggersForState.append( trigger )
             triggers[state] = triggersForState
@@ -66,8 +48,8 @@ public class StateMachine<Action:Equatable,State:Hashable> {
         }
     }
     
-    public func perform(action:Action, context: AnyObject?) {
-        let oldState = state.state
+    public mutating func perform(action:Action, withContext context: Any? = nil) {
+        let oldState = state
         
         if let availableTransitions: [(Action, State)] = stateTransitions[oldState] {
             
@@ -75,7 +57,7 @@ public class StateMachine<Action:Equatable,State:Hashable> {
                 switch t {
                 case (let a, let s) where a == action:
                     
-                    state.state = s
+                    state = s
                     
                     if let stateTriggers = self.triggers[s] {
                         for trigger in stateTriggers {
@@ -91,6 +73,6 @@ public class StateMachine<Action:Equatable,State:Hashable> {
     }
     
     public func isState(state:State) -> Bool {
-        return self.state.state == state
+        return self.state == state
     }
 }

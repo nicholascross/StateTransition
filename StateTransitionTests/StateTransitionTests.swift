@@ -9,25 +9,25 @@
 import XCTest
 @testable import StateTransition
 
-enum StateOfMatter {
+private enum StateOfMatter {
     case Solid
     case Liquid
     case Gas
     case Plasma
 }
 
-enum EnergyTransfer {
+private enum EnergyTransfer {
     case Increase
     case Decrease
 }
 
 class StateTransitionTests: XCTestCase {
     
-    var stateMachine : StateMachine<EnergyTransfer, StateOfMatter>!
+    private var stateMachine : StateMachine<EnergyTransfer, StateOfMatter, String>!
     
     override func setUp() {
         super.setUp()
-        stateMachine = StateMachine<EnergyTransfer, StateOfMatter>(initialState: .Solid)
+        stateMachine = StateMachine<EnergyTransfer, StateOfMatter, String>(initialState: .Solid)
         
         stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
         stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
@@ -77,19 +77,20 @@ class StateTransitionTests: XCTestCase {
         var frozenFrom: StateOfMatter!
         var action: EnergyTransfer!
         
-        stateMachine.addTrigger(forState: .Solid, trigger: {
-            energyTransfer, oldMatterState, currentMatterState, _ in
+        func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:String?) {
             isFrozen = true
-            frozenFrom = oldMatterState
+            frozenFrom = fromState
             action = energyTransfer
-        })
+        }
+        
+        stateMachine.addTrigger(forState: .Solid, trigger: transitionedToSolid)
         
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Decrease)
         stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
+        stateMachine.perform(action: .Decrease, withContext: "It is cold.")
         
         XCTAssert(isFrozen, "Expected to be frozen")
         XCTAssert(frozenFrom == .Liquid, "Expected to be frozen from liquid state")

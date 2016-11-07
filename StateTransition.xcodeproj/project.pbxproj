@@ -11,6 +11,7 @@
 		E1068AEE1DD08E96000B5B31 /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1068AED1DD08E96000B5B31 /* StateTransitionTests.swift */; };
 		E1068AF01DD08E96000B5B31 /* StateTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = E1068AE21DD08E96000B5B31 /* StateTransition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1068AFA1DD08EAF000B5B31 /* StateTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1068AF91DD08EAF000B5B31 /* StateTransition.swift */; };
+		E14016EC1DD0A46D004ED806 /* ReadmeExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14016EB1DD0A46D004ED806 /* ReadmeExamples.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,7 @@
 		E1068AED1DD08E96000B5B31 /* StateTransitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateTransitionTests.swift; sourceTree = "<group>"; };
 		E1068AEF1DD08E96000B5B31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E1068AF91DD08EAF000B5B31 /* StateTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransition.swift; sourceTree = "<group>"; };
+		E14016EB1DD0A46D004ED806 /* ReadmeExamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadmeExamples.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 			children = (
 				E1068AED1DD08E96000B5B31 /* StateTransitionTests.swift */,
 				E1068AEF1DD08E96000B5B31 /* Info.plist */,
+				E14016EB1DD0A46D004ED806 /* ReadmeExamples.swift */,
 			);
 			path = StateTransitionTests;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E14016EC1DD0A46D004ED806 /* ReadmeExamples.swift in Sources */,
 				E1068AEE1DD08E96000B5B31 /* StateTransitionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +414,7 @@
 				E1068AF51DD08E96000B5B31 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E1068AF61DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransitionTests" */ = {
 			isa = XCConfigurationList;
@@ -418,6 +423,7 @@
 				E1068AF81DD08E96000B5B31 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

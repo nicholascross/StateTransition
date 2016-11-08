@@ -1,4 +1,10 @@
 # StateTransition
+![build status](https://travis-ci.org/nicholascross/StateTransition.svg?branch=master)
+![code coverage](https://img.shields.io/codecov/c/github/nicholascross/StateTransition.svg)
+[![GitHub release](https://img.shields.io/github/release/nicholascross/StateTransition.svg)](https://github.com/nicholascross/StateTransition/releases) 
+![Swift 3.0.x](https://img.shields.io/badge/Swift-3.0.x-orange.svg) 
+![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OS%20X%20%7C%20watchOS%20%7C%20tvOS%20-lightgrey.svg)
+
 A swift state machine supporting; states, transitions, actions and transition handling
 
 ```swift

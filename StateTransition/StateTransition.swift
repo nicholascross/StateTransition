@@ -9,19 +9,19 @@ import Foundation
 
 public struct StateMachine<Action:Hashable,State:Hashable, Context> {
     
-    public typealias StateTrigger = (Action,State,State,Context?)->()
+    public typealias StateTransitionHandler = (Action,State,State,Context?)->()
     public typealias StateTransitions = [Action:State]
     
     private var stateTransitionsForState: [State:StateTransitions]
     
     private var state: State
     
-    private var triggers: [State:[StateTrigger]]
+    private var transitionHandlers: [State:[StateTransitionHandler]]
     
     public init(initialState:State) {
         self.state = initialState
         self.stateTransitionsForState = [State : StateTransitions]()
-        self.triggers = [State : [StateTrigger]]()
+        self.transitionHandlers = [State : [StateTransitionHandler]]()
     }
     
     public mutating func addTransition(fromState:State, toState:State, when action:Action) {
@@ -43,20 +43,20 @@ public struct StateMachine<Action:Hashable,State:Hashable, Context> {
         }
     }
     
-    public mutating func addTrigger(forState state:State, trigger:@escaping StateTrigger) {
-        if var triggersForState = self.triggers[state] {
-            triggersForState.append( trigger )
-            triggers[state] = triggersForState
+    public mutating func addHandlerForTransition(toState state:State, handler:@escaping StateTransitionHandler) {
+        if var handlersForState = self.transitionHandlers[state] {
+            handlersForState.append( handler )
+            self.transitionHandlers[state] = handlersForState
         }
         else {
-            var triggersForState = [StateTrigger]()
-            triggersForState.append( trigger )
-            triggers[state] = triggersForState
+            var handlersForState = [StateTransitionHandler]()
+            handlersForState.append( handler )
+            self.transitionHandlers[state] = handlersForState
         }
     }
     
-    public mutating func removeAllTriggers(forState state:State) {
-        self.triggers[state] = nil
+    public mutating func removeAllHandlersForTransition(toState state:State) {
+        self.transitionHandlers[state] = nil
     }
     
     public mutating func perform(action:Action, withContext context: Context? = nil) {
@@ -65,7 +65,7 @@ public struct StateMachine<Action:Hashable,State:Hashable, Context> {
         if let availableTransitions = stateTransitionsForState[oldState], let s = availableTransitions[action] {
             state = s
                     
-            if let stateTriggers = self.triggers[s] {
+            if let stateTriggers = self.transitionHandlers[s] {
                 for trigger in stateTriggers {
                     trigger(action, oldState, s, context)
                 }

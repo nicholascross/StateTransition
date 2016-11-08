@@ -72,7 +72,7 @@ class StateTransitionTests: XCTestCase {
         XCTAssert(stateMachine.currentState == .Solid, "Expected to freeze plasma to solid state")
     }
     
-    func testTriggerExecution() {
+    func testTransitionHandlerExecution() {
         var isFrozen = false
         var frozenFrom: StateOfMatter!
         var action: EnergyTransfer!
@@ -83,7 +83,7 @@ class StateTransitionTests: XCTestCase {
             action = energyTransfer
         }
         
-        stateMachine.addTrigger(forState: .Solid, trigger: transitionedToSolid)
+        stateMachine.addHandlerForTransition(toState: .Solid, handler: transitionedToSolid)
         
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
@@ -97,7 +97,7 @@ class StateTransitionTests: XCTestCase {
         XCTAssert(action == .Decrease, "Expected to be frozen by decreasing energy")
     }
     
-    func testTriggerRemoval() {
+    func testTransitionHandlerRemoval() {
         var isFrozen = false
         var frozenFrom: StateOfMatter? = nil
         var action: EnergyTransfer? = nil
@@ -108,8 +108,8 @@ class StateTransitionTests: XCTestCase {
             action = energyTransfer
         }
         
-        stateMachine.addTrigger(forState: .Solid, trigger: transitionedToSolid)
-        stateMachine.removeAllTriggers(forState: .Solid)
+        stateMachine.addHandlerForTransition(toState: .Solid, handler: transitionedToSolid)
+        stateMachine.removeAllHandlersForTransition(toState: .Solid)
         
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
@@ -118,9 +118,9 @@ class StateTransitionTests: XCTestCase {
         stateMachine.perform(action: .Decrease)
         stateMachine.perform(action: .Decrease, withContext: "It is cold.")
         
-        XCTAssert(!isFrozen, "Expected to variable to be unchanged by trigger")
-        XCTAssert(frozenFrom == nil, "Expected state change triggered nothing")
-        XCTAssert(action == nil, "Expected action triggered nothing")
+        XCTAssert(!isFrozen, "Expected to variable to be unchanged by transition handler")
+        XCTAssert(frozenFrom == nil, "Expected to variable to be unchanged by transition handler")
+        XCTAssert(action == nil, "Expected to variable to be unchanged by transition handler")
     }
     
     func testStateTransitionRemoval() {

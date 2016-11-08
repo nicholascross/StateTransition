@@ -41,18 +41,25 @@ class ReadmeExampleTests: XCTestCase {
             }
         }
         
-        stateMachine.addTrigger(forState: .Solid, trigger: stateOfMatterChanged)
-        stateMachine.addTrigger(forState: .Liquid, trigger: stateOfMatterChanged)
-        stateMachine.addTrigger(forState: .Gas, trigger: stateOfMatterChanged)
-        stateMachine.addTrigger(forState: .Plasma, trigger: stateOfMatterChanged)
+        stateMachine.addHandlerForTransition(toState: .Liquid, handler: stateOfMatterChanged)
+        stateMachine.addHandlerForTransition(toState: .Gas, handler: stateOfMatterChanged)
+        stateMachine.addHandlerForTransition(toState: .Plasma, handler: stateOfMatterChanged)
+        
+        stateMachine.addHandlerForTransition(toState: .Liquid) {
+            _, fromState, _, _ in
+            if fromState == .Solid {
+                print("it melted.")
+            }
+        }
         
         stateMachine.perform(action: .Increase)
         //prints: transitioned from Solid to Liquid as result of energy Increase
+        //prints: it melted.
         stateMachine.perform(action: .Increase)
         //prints: transitioned from Liquid to Gas as result of energy Increase
-        stateMachine.perform(action: .Increase, withContext: "it is hot")
+        stateMachine.perform(action: .Increase, withContext: "it is very hot")
         //prints: transitioned from Gas to Plasma as result of energy Increase
-        //prints: it is hot
+        //prints: it is very hot
     }
     
 }

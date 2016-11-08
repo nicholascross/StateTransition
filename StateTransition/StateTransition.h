@@ -2,11 +2,11 @@
 //  StateTransition.h
 //  StateTransition
 //
-//  Created by Nicholas Cross on 7/11/2016.
+//  Created by Nicholas Cross on 8/11/2016.
 //  Copyright © 2016 Nicholas Cross. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for StateTransition.
 FOUNDATION_EXPORT double StateTransitionVersionNumber;

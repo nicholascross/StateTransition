@@ -12,6 +12,15 @@
 		E1068AF01DD08E96000B5B31 /* StateTransition.h in Headers */ = {isa = PBXBuildFile; fileRef = E1068AE21DD08E96000B5B31 /* StateTransition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E1068AFA1DD08EAF000B5B31 /* StateTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1068AF91DD08EAF000B5B31 /* StateTransition.swift */; };
 		E14016EC1DD0A46D004ED806 /* ReadmeExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14016EB1DD0A46D004ED806 /* ReadmeExamples.swift */; };
+		E1F84C961DD1C81E002F658B /* StateTransition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F84C8D1DD1C81E002F658B /* StateTransition.framework */; };
+		E1F84CA41DD1C887002F658B /* StateTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1068AF91DD08EAF000B5B31 /* StateTransition.swift */; };
+		E1F84CB31DD1C89E002F658B /* StateTransition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F84CAA1DD1C89D002F658B /* StateTransition.framework */; };
+		E1F84CC11DD1C8B3002F658B /* StateTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1068AF91DD08EAF000B5B31 /* StateTransition.swift */; };
+		E1F84CC21DD1C97D002F658B /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1068AED1DD08E96000B5B31 /* StateTransitionTests.swift */; };
+		E1F84CC31DD1C97D002F658B /* ReadmeExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14016EB1DD0A46D004ED806 /* ReadmeExamples.swift */; };
+		E1F84CC41DD1C982002F658B /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1068AED1DD08E96000B5B31 /* StateTransitionTests.swift */; };
+		E1F84CC51DD1C982002F658B /* ReadmeExamples.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14016EB1DD0A46D004ED806 /* ReadmeExamples.swift */; };
+		E1F84CD31DD1C9FC002F658B /* StateTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1068AF91DD08EAF000B5B31 /* StateTransition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,17 +31,36 @@
 			remoteGlobalIDString = E1068ADE1DD08E96000B5B31;
 			remoteInfo = StateTransition;
 		};
+		E1F84C971DD1C81E002F658B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1068AD61DD08E96000B5B31 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1F84C8C1DD1C81E002F658B;
+			remoteInfo = StateTransition;
+		};
+		E1F84CB41DD1C89E002F658B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E1068AD61DD08E96000B5B31 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E1F84CA91DD1C89D002F658B;
+			remoteInfo = StateTransition;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		E1068ADF1DD08E96000B5B31 /* StateTransition.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateTransition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1068AE21DD08E96000B5B31 /* StateTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateTransition.h; sourceTree = "<group>"; };
 		E1068AE31DD08E96000B5B31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E1068AE81DD08E96000B5B31 /* StateTransitionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StateTransitionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1068AE81DD08E96000B5B31 /* StateTransitionTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "StateTransitionTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1068AED1DD08E96000B5B31 /* StateTransitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateTransitionTests.swift; sourceTree = "<group>"; };
 		E1068AEF1DD08E96000B5B31 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E1068AF91DD08EAF000B5B31 /* StateTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransition.swift; sourceTree = "<group>"; };
 		E14016EB1DD0A46D004ED806 /* ReadmeExamples.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReadmeExamples.swift; sourceTree = "<group>"; };
+		E1F84C8D1DD1C81E002F658B /* StateTransition.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateTransition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1F84C951DD1C81E002F658B /* StateTransitionTests-tvOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "StateTransitionTests-tvOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1F84CAA1DD1C89D002F658B /* StateTransition.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateTransition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1F84CB21DD1C89E002F658B /* StateTransitionTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "StateTransitionTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1F84CCB1DD1C9CA002F658B /* StateTransition.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateTransition.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +76,43 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1068AE91DD08E96000B5B31 /* StateTransition.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84C891DD1C81E002F658B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84C921DD1C81E002F658B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1F84C961DD1C81E002F658B /* StateTransition.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CA61DD1C89D002F658B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CAF1DD1C89E002F658B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1F84CB31DD1C89E002F658B /* StateTransition.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CC71DD1C9CA002F658B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,7 +132,12 @@
 			isa = PBXGroup;
 			children = (
 				E1068ADF1DD08E96000B5B31 /* StateTransition.framework */,
-				E1068AE81DD08E96000B5B31 /* StateTransitionTests.xctest */,
+				E1068AE81DD08E96000B5B31 /* StateTransitionTests-iOS.xctest */,
+				E1F84C8D1DD1C81E002F658B /* StateTransition.framework */,
+				E1F84C951DD1C81E002F658B /* StateTransitionTests-tvOS.xctest */,
+				E1F84CAA1DD1C89D002F658B /* StateTransition.framework */,
+				E1F84CB21DD1C89E002F658B /* StateTransitionTests-macOS.xctest */,
+				E1F84CCB1DD1C9CA002F658B /* StateTransition.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -103,12 +173,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E1F84C8A1DD1C81E002F658B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CA71DD1C89D002F658B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CC81DD1C9CA002F658B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E1068ADE1DD08E96000B5B31 /* StateTransition */ = {
+		E1068ADE1DD08E96000B5B31 /* StateTransition-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E1068AF31DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransition" */;
+			buildConfigurationList = E1068AF31DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransition-iOS" */;
 			buildPhases = (
 				E1068ADA1DD08E96000B5B31 /* Sources */,
 				E1068ADB1DD08E96000B5B31 /* Frameworks */,
@@ -119,14 +210,14 @@
 			);
 			dependencies = (
 			);
-			name = StateTransition;
+			name = "StateTransition-iOS";
 			productName = StateTransition;
 			productReference = E1068ADF1DD08E96000B5B31 /* StateTransition.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E1068AE71DD08E96000B5B31 /* StateTransitionTests */ = {
+		E1068AE71DD08E96000B5B31 /* StateTransitionTests-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E1068AF61DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransitionTests" */;
+			buildConfigurationList = E1068AF61DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransitionTests-iOS" */;
 			buildPhases = (
 				E1068AE41DD08E96000B5B31 /* Sources */,
 				E1068AE51DD08E96000B5B31 /* Frameworks */,
@@ -137,10 +228,100 @@
 			dependencies = (
 				E1068AEB1DD08E96000B5B31 /* PBXTargetDependency */,
 			);
-			name = StateTransitionTests;
+			name = "StateTransitionTests-iOS";
 			productName = StateTransitionTests;
-			productReference = E1068AE81DD08E96000B5B31 /* StateTransitionTests.xctest */;
+			productReference = E1068AE81DD08E96000B5B31 /* StateTransitionTests-iOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E1F84C8C1DD1C81E002F658B /* StateTransition-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1F84C9E1DD1C81E002F658B /* Build configuration list for PBXNativeTarget "StateTransition-tvOS" */;
+			buildPhases = (
+				E1F84C881DD1C81E002F658B /* Sources */,
+				E1F84C891DD1C81E002F658B /* Frameworks */,
+				E1F84C8A1DD1C81E002F658B /* Headers */,
+				E1F84C8B1DD1C81E002F658B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "StateTransition-tvOS";
+			productName = StateTransition;
+			productReference = E1F84C8D1DD1C81E002F658B /* StateTransition.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E1F84C941DD1C81E002F658B /* StateTransitionTests-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1F84CA11DD1C81E002F658B /* Build configuration list for PBXNativeTarget "StateTransitionTests-tvOS" */;
+			buildPhases = (
+				E1F84C911DD1C81E002F658B /* Sources */,
+				E1F84C921DD1C81E002F658B /* Frameworks */,
+				E1F84C931DD1C81E002F658B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E1F84C981DD1C81E002F658B /* PBXTargetDependency */,
+			);
+			name = "StateTransitionTests-tvOS";
+			productName = StateTransitionTests;
+			productReference = E1F84C951DD1C81E002F658B /* StateTransitionTests-tvOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E1F84CA91DD1C89D002F658B /* StateTransition-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1F84CBB1DD1C89E002F658B /* Build configuration list for PBXNativeTarget "StateTransition-macOS" */;
+			buildPhases = (
+				E1F84CA51DD1C89D002F658B /* Sources */,
+				E1F84CA61DD1C89D002F658B /* Frameworks */,
+				E1F84CA71DD1C89D002F658B /* Headers */,
+				E1F84CA81DD1C89D002F658B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "StateTransition-macOS";
+			productName = StateTransition;
+			productReference = E1F84CAA1DD1C89D002F658B /* StateTransition.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		E1F84CB11DD1C89E002F658B /* StateTransitionTests-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1F84CBE1DD1C89E002F658B /* Build configuration list for PBXNativeTarget "StateTransitionTests-macOS" */;
+			buildPhases = (
+				E1F84CAE1DD1C89E002F658B /* Sources */,
+				E1F84CAF1DD1C89E002F658B /* Frameworks */,
+				E1F84CB01DD1C89E002F658B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E1F84CB51DD1C89E002F658B /* PBXTargetDependency */,
+			);
+			name = "StateTransitionTests-macOS";
+			productName = StateTransitionTests;
+			productReference = E1F84CB21DD1C89E002F658B /* StateTransitionTests-macOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E1F84CCA1DD1C9CA002F658B /* StateTransition-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E1F84CD01DD1C9CA002F658B /* Build configuration list for PBXNativeTarget "StateTransition-watchOS" */;
+			buildPhases = (
+				E1F84CC61DD1C9CA002F658B /* Sources */,
+				E1F84CC71DD1C9CA002F658B /* Frameworks */,
+				E1F84CC81DD1C9CA002F658B /* Headers */,
+				E1F84CC91DD1C9CA002F658B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "StateTransition-watchOS";
+			productName = StateTransition;
+			productReference = E1F84CCB1DD1C9CA002F658B /* StateTransition.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -163,6 +344,31 @@
 						DevelopmentTeam = BRM53H4XE2;
 						ProvisioningStyle = Automatic;
 					};
+					E1F84C8C1DD1C81E002F658B = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = BRM53H4XE2;
+						ProvisioningStyle = Automatic;
+					};
+					E1F84C941DD1C81E002F658B = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = BRM53H4XE2;
+						ProvisioningStyle = Automatic;
+					};
+					E1F84CA91DD1C89D002F658B = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = BRM53H4XE2;
+						ProvisioningStyle = Automatic;
+					};
+					E1F84CB11DD1C89E002F658B = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = BRM53H4XE2;
+						ProvisioningStyle = Automatic;
+					};
+					E1F84CCA1DD1C9CA002F658B = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = BRM53H4XE2;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = E1068AD91DD08E96000B5B31 /* Build configuration list for PBXProject "StateTransition" */;
@@ -177,8 +383,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E1068ADE1DD08E96000B5B31 /* StateTransition */,
-				E1068AE71DD08E96000B5B31 /* StateTransitionTests */,
+				E1068ADE1DD08E96000B5B31 /* StateTransition-iOS */,
+				E1068AE71DD08E96000B5B31 /* StateTransitionTests-iOS */,
+				E1F84C8C1DD1C81E002F658B /* StateTransition-tvOS */,
+				E1F84C941DD1C81E002F658B /* StateTransitionTests-tvOS */,
+				E1F84CA91DD1C89D002F658B /* StateTransition-macOS */,
+				E1F84CB11DD1C89E002F658B /* StateTransitionTests-macOS */,
+				E1F84CCA1DD1C9CA002F658B /* StateTransition-watchOS */,
 			);
 		};
 /* End PBXProject section */
@@ -192,6 +403,41 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		E1068AE61DD08E96000B5B31 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84C8B1DD1C81E002F658B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84C931DD1C81E002F658B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CA81DD1C89D002F658B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CB01DD1C89E002F658B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CC91DD1C9CA002F658B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -218,13 +464,65 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E1F84C881DD1C81E002F658B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1F84CA41DD1C887002F658B /* StateTransition.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84C911DD1C81E002F658B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1F84CC21DD1C97D002F658B /* StateTransitionTests.swift in Sources */,
+				E1F84CC31DD1C97D002F658B /* ReadmeExamples.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CA51DD1C89D002F658B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1F84CC11DD1C8B3002F658B /* StateTransition.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CAE1DD1C89E002F658B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1F84CC41DD1C982002F658B /* StateTransitionTests.swift in Sources */,
+				E1F84CC51DD1C982002F658B /* ReadmeExamples.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E1F84CC61DD1C9CA002F658B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E1F84CD31DD1C9FC002F658B /* StateTransition.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		E1068AEB1DD08E96000B5B31 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E1068ADE1DD08E96000B5B31 /* StateTransition */;
+			target = E1068ADE1DD08E96000B5B31 /* StateTransition-iOS */;
 			targetProxy = E1068AEA1DD08E96000B5B31 /* PBXContainerItemProxy */;
+		};
+		E1F84C981DD1C81E002F658B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1F84C8C1DD1C81E002F658B /* StateTransition-tvOS */;
+			targetProxy = E1F84C971DD1C81E002F658B /* PBXContainerItemProxy */;
+		};
+		E1F84CB51DD1C89E002F658B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E1F84CA91DD1C89D002F658B /* StateTransition-macOS */;
+			targetProxy = E1F84CB41DD1C89E002F658B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -342,7 +640,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransition;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = StateTransition;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -363,7 +661,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransition;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = StateTransition;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
 			};
@@ -395,6 +693,206 @@
 			};
 			name = Release;
 		};
+		E1F84C9F1DD1C81E002F658B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StateTransition/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransition;
+				PRODUCT_NAME = StateTransition;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		E1F84CA01DD1C81E002F658B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StateTransition/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransition;
+				PRODUCT_NAME = StateTransition;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		E1F84CA21DD1C81E002F658B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				INFOPLIST_FILE = StateTransitionTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransitionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		E1F84CA31DD1C81E002F658B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				INFOPLIST_FILE = StateTransitionTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransitionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_VERSION = 3.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		E1F84CBC1DD1C89E002F658B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = StateTransition/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransition;
+				PRODUCT_NAME = StateTransition;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		E1F84CBD1DD1C89E002F658B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = StateTransition/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransition;
+				PRODUCT_NAME = StateTransition;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		E1F84CBF1DD1C89E002F658B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				INFOPLIST_FILE = StateTransitionTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransitionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		E1F84CC01DD1C89E002F658B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				INFOPLIST_FILE = StateTransitionTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransitionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		E1F84CD11DD1C9CA002F658B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StateTransition/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransition;
+				PRODUCT_NAME = StateTransition;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Debug;
+		};
+		E1F84CD21DD1C9CA002F658B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = BRM53H4XE2;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = StateTransition/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nacross.StateTransition;
+				PRODUCT_NAME = StateTransition;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 3.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -407,7 +905,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E1068AF31DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransition" */ = {
+		E1068AF31DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransition-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E1068AF41DD08E96000B5B31 /* Debug */,
@@ -416,7 +914,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E1068AF61DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransitionTests" */ = {
+		E1068AF61DD08E96000B5B31 /* Build configuration list for PBXNativeTarget "StateTransitionTests-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E1068AF71DD08E96000B5B31 /* Debug */,
@@ -424,6 +922,46 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		E1F84C9E1DD1C81E002F658B /* Build configuration list for PBXNativeTarget "StateTransition-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1F84C9F1DD1C81E002F658B /* Debug */,
+				E1F84CA01DD1C81E002F658B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E1F84CA11DD1C81E002F658B /* Build configuration list for PBXNativeTarget "StateTransitionTests-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1F84CA21DD1C81E002F658B /* Debug */,
+				E1F84CA31DD1C81E002F658B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E1F84CBB1DD1C89E002F658B /* Build configuration list for PBXNativeTarget "StateTransition-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1F84CBC1DD1C89E002F658B /* Debug */,
+				E1F84CBD1DD1C89E002F658B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E1F84CBE1DD1C89E002F658B /* Build configuration list for PBXNativeTarget "StateTransitionTests-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1F84CBF1DD1C89E002F658B /* Debug */,
+				E1F84CC01DD1C89E002F658B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		E1F84CD01DD1C9CA002F658B /* Build configuration list for PBXNativeTarget "StateTransition-watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E1F84CD11DD1C9CA002F658B /* Debug */,
+				E1F84CD21DD1C9CA002F658B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

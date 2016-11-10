@@ -1,6 +1,8 @@
 # StateTransition
 ![build status](https://travis-ci.org/nicholascross/StateTransition.svg?branch=master)
 ![code coverage](https://img.shields.io/codecov/c/github/nicholascross/StateTransition.svg)
+[![carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) 
+[![CocoaPods compatible](https://img.shields.io/cocoapods/v/StateTransition.svg)](https://cocoapods.org/pods/StateTransition) 
 [![GitHub release](https://img.shields.io/github/release/nicholascross/StateTransition.svg)](https://github.com/nicholascross/StateTransition/releases) 
 ![Swift 3.0.x](https://img.shields.io/badge/Swift-3.0.x-orange.svg) 
 ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OS%20X%20%7C%20watchOS%20%7C%20tvOS%20-lightgrey.svg)

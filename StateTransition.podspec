@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "StateTransition"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "A swift state machine supporting; states, transitions, actions and transition handling"
   s.homepage     = "https://github.com/nicholascross/StateTransition"
   s.license      = 'MIT'
@@ -13,8 +13,8 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = "9.0"
   s.watchos.deployment_target = "2.0"
 
-  s.source       = { :git => "https://github.com/nicholascross/StateTransition.git", :tag => "1.0.0" }
-  s.source_files  = 'StateTransition/*'
+  s.source       = { :git => "https://github.com/nicholascross/StateTransition.git", :tag => "1.0.1" }
+  s.source_files  = 'StateTransition/*.swift'
   s.requires_arc = true
 
 end

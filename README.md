@@ -30,32 +30,14 @@ A swift state machine supporting; states, transitions, actions and transition ha
         stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
         stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
         stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
-        
-        func stateOfMatterChanged(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:String?) {
-            print("transitioned from \(fromState) to \(toState) as result of energy \(energyTransfer)")
-            
-            if let c = context {
-                print("\(c)")
-            }
-        }
-        
-        stateMachine.addHandlerForTransition(toState: .Liquid, handler: stateOfMatterChanged)
-        stateMachine.addHandlerForTransition(toState: .Gas, handler: stateOfMatterChanged)
-        stateMachine.addHandlerForTransition(toState: .Plasma, handler: stateOfMatterChanged)
-        
-        stateMachine.addHandlerForTransition(toState: .Liquid) {
-            _, fromState, _, _ in
-            if fromState == .Solid {
-                print("it melted.")
-            }
+           
+        stateMachine.addHandlerForTransition(toState: .Plasma) {
+            action, fromState, toState, context in
+            print("transitioned from \(fromState) to \(toState) as result of energy \(action) - \(context)")
         }
         
         stateMachine.perform(action: .Increase)
-        //prints: transitioned from Solid to Liquid as result of energy Increase
-        //prints: it melted.
         stateMachine.perform(action: .Increase)
-        //prints: transitioned from Liquid to Gas as result of energy Increase
         stateMachine.perform(action: .Increase, withContext: "it is very hot")
-        //prints: transitioned from Gas to Plasma as result of energy Increase
-        //prints: it is very hot
+        //prints: transitioned from Gas to Plasma as result of energy Increase - it is very hot
 ```

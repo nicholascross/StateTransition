@@ -10,7 +10,7 @@
 A swift state machine supporting; states, transitions, actions and transition handling
 
 ```swift
-        enum StateOfMatter {
+       enum StateOfMatter {
             case Solid
             case Liquid
             case Gas
@@ -30,10 +30,10 @@ A swift state machine supporting; states, transitions, actions and transition ha
         stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
         stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
         stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
-           
+        
         stateMachine.addHandlerForTransition(toState: .Plasma) {
             action, fromState, toState, context in
-            print("transitioned from \(fromState) to \(toState) as result of energy \(action) - \(context)")
+            print("transitioned from \(fromState) to \(toState) as result of energy \(action) - \(context ?? "no context")")
         }
         
         stateMachine.perform(action: .Increase)

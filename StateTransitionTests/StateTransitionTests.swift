@@ -9,7 +9,9 @@
 import XCTest
 @testable import StateTransition
 
-private enum StateOfMatter {
+private enum StateOfMatter: StateTransitionable {
+    typealias Action = EnergyTransfer
+    
     case Solid
     case Liquid
     case Gas
@@ -23,19 +25,34 @@ private enum EnergyTransfer {
 
 class StateTransitionTests: XCTestCase {
     
-    private var stateMachine : StateMachine<EnergyTransfer, StateOfMatter, String>!
+    private var stateMachine : StateMachine<EnergyTransfer, StateOfMatter, Any>!
+    
+    private var isFrozen = false
+    private var frozenFrom: StateOfMatter!
+    private var action: EnergyTransfer!
     
     override func setUp() {
         super.setUp()
-        stateMachine = StateMachine<EnergyTransfer, StateOfMatter, String>(initialState: .Solid)
         
-        stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
-        stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
-        stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
+        func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:Any) {
+            if toState == .Solid {
+                isFrozen = true
+                frozenFrom = fromState
+                action = energyTransfer
+            }
+        }
         
-        stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
-        stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
-        stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
+        stateMachine = StateOfMatter.Solid.createStateMachine { stateMachine in
+            stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
+            stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
+            stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
+            
+            stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
+            stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
+            stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
+
+            stateMachine.handler = transitionedToSolid
+        }
     }
     
     func testSingleTransition() {
@@ -73,18 +90,6 @@ class StateTransitionTests: XCTestCase {
     }
     
     func testTransitionHandlerExecution() {
-        var isFrozen = false
-        var frozenFrom: StateOfMatter!
-        var action: EnergyTransfer!
-        
-        func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:String?) {
-            isFrozen = true
-            frozenFrom = fromState
-            action = energyTransfer
-        }
-        
-        stateMachine.addHandlerForTransition(toState: .Solid, handler: transitionedToSolid)
-        
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
         stateMachine.perform(action: .Increase)
@@ -96,45 +101,5 @@ class StateTransitionTests: XCTestCase {
         XCTAssert(frozenFrom == .Liquid, "Expected to be frozen from liquid state")
         XCTAssert(action == .Decrease, "Expected to be frozen by decreasing energy")
     }
-    
-    func testTransitionHandlerRemoval() {
-        var isFrozen = false
-        var frozenFrom: StateOfMatter? = nil
-        var action: EnergyTransfer? = nil
-        
-        func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:String?) {
-            isFrozen = true
-            frozenFrom = fromState
-            action = energyTransfer
-        }
-        
-        stateMachine.addHandlerForTransition(toState: .Solid, handler: transitionedToSolid)
-        stateMachine.removeAllHandlersForTransition(toState: .Solid)
-        
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease, withContext: "It is cold.")
-        
-        XCTAssert(!isFrozen, "Expected to variable to be unchanged by transition handler")
-        XCTAssert(frozenFrom == nil, "Expected to variable to be unchanged by transition handler")
-        XCTAssert(action == nil, "Expected to variable to be unchanged by transition handler")
-    }
-    
-    func testStateTransitionRemoval() {
-        stateMachine.removeTransition(fromState: .Gas, when: .Increase)
-        stateMachine.removeTransition(fromState: .Liquid, when: .Decrease)
-        
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        XCTAssert(stateMachine.currentState == .Gas, "Expected to vaporise solid to gas state")
-        
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        XCTAssert(stateMachine.currentState == .Liquid, "Expected to condense gas to liquid state")
-    }
+
 }

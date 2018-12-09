@@ -12,7 +12,10 @@ import XCTest
 class ReadmeExampleTests: XCTestCase {
  
     func testExample() {
-        enum StateOfMatter {
+        enum StateOfMatter: StateTransitionable {
+            typealias Action = EnergyTransfer
+            typealias Context = String
+            
             case Solid
             case Liquid
             case Gas
@@ -23,25 +26,27 @@ class ReadmeExampleTests: XCTestCase {
             case Increase
             case Decrease
         }
-        
-        var stateMachine = StateMachine<EnergyTransfer, StateOfMatter, String>(initialState: .Solid)
-        
-        stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
-        stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
-        stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
-        stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
-        stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
-        stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
-        
-        stateMachine.addHandlerForTransition(toState: .Plasma) {
-            action, fromState, toState, context in
+
+        func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context: String?)->() {
             print("transitioned from \(fromState) to \(toState) as result of energy \(action) - \(context ?? "no context")")
+        }
+
+        var stateMachine = StateOfMatter.Solid.createStateMachine { stateMachine in
+            stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
+            stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
+            stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
+            stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
+            stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
+            stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
+            stateMachine.handler = transitionHandler
         }
         
         stateMachine.perform(action: .Increase)
+        //prints: transitioned from Solid to Liquid as result of energy Increase - no context
         stateMachine.perform(action: .Increase)
+        //prints: transitioned from Liquid to Gas as result of energy Increase - no context
         stateMachine.perform(action: .Increase, withContext: "it is very hot")
-        //prints: transitioned from Gas to Plasma as result of energy Increase - it is very hot    
+        //prints: transitioned from Gas to Plasma as result of energy Increase - it is very hot
     }
     
 }

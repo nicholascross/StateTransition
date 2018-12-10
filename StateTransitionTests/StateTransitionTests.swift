@@ -16,6 +16,15 @@ private enum StateOfMatter: StateTransitionable {
     case Liquid
     case Gas
     case Plasma
+    
+    static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter, Any>.TransitionBuilder) {
+        stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
+        stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
+        stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
+        stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
+        stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
+        stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
+    }
 }
 
 private enum EnergyTransfer {
@@ -42,17 +51,8 @@ class StateTransitionTests: XCTestCase {
             }
         }
         
-        stateMachine = StateOfMatter.Solid.createStateMachine { stateMachine in
-            stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
-            stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
-            stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
-            
-            stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
-            stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
-            stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
-
-            stateMachine.handler = transitionedToSolid
-        }
+        stateMachine = StateOfMatter.Solid.stateMachine()
+        stateMachine.transitionHandler = transitionedToSolid
     }
     
     func testSingleTransition() {

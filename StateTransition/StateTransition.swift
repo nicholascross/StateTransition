@@ -10,14 +10,15 @@ import Foundation
 public protocol StateTransitionable: Hashable {
     associatedtype Action: Hashable
     associatedtype Context = Any
+    
+    static func defineTransitions(_ stateMachine: StateMachine<Action, Self, Context>.TransitionBuilder)
 }
 
 public extension StateTransitionable {
-    
-    func createStateMachine(_ buildTransitions: (StateMachine<Action, Self, Context>.TransitionBuilder)->Void) -> StateMachine<Action, Self, Context> {
+    func stateMachine() -> StateMachine<Action, Self, Context> {
         let builder = StateMachine<Action, Self, Context>.TransitionBuilder()
-        buildTransitions(builder)
-        return StateMachine(initialState: self, transitions: builder.transitionsForState, handler: builder.handler)
+        Self.defineTransitions(builder)
+        return StateMachine(initialState: self, transitions: builder.transitionsForState)
     }
 }
 
@@ -27,14 +28,13 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
     public typealias StateTransitions = [Action:State]
     
     private var state: State
-    
     private let transitionsForState: [State:StateTransitions]
-    private let transitionHandler: StateTransitionHandler?
+    
+    public var transitionHandler: StateTransitionHandler? = nil
 
-    init(initialState:State, transitions: [State:StateTransitions], handler: StateTransitionHandler?) {
+    init(initialState:State, transitions: [State:StateTransitions]) {
         self.state = initialState
         self.transitionsForState = transitions
-        self.transitionHandler = handler
     }
     
     public mutating func perform(action:Action, withContext context: Context? = nil) {
@@ -52,8 +52,6 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
     
     public class TransitionBuilder {
         var transitionsForState: [State:StateTransitions] = [:]
-        
-        public var handler: StateTransitionHandler? = nil
         
         public func addTransition(fromState:State, toState:State, when action:Action) {
             if var availableTransitions = self.transitionsForState[fromState] {

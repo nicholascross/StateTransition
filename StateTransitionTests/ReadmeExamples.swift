@@ -3,7 +3,7 @@
 //  StateTransitionTests
 //
 //  Created by Nicholas Cross on 7/11/2016.
-//  Copyright © 2016 Nicholas Cross. All rights reserved.
+//  Copyright © 2018 Nicholas Cross. All rights reserved.
 //
 
 import XCTest

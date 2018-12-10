@@ -3,7 +3,7 @@
 //  StateTransitionTests
 //
 //  Created by Nicholas Cross on 7/11/2016.
-//  Copyright © 2016 Nicholas Cross. All rights reserved.
+//  Copyright © 2018 Nicholas Cross. All rights reserved.
 //
 
 import XCTest
@@ -44,15 +44,16 @@ class StateTransitionTests: XCTestCase {
         super.setUp()
         
         func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:Any) {
-            if toState == .Solid {
-                isFrozen = true
-                frozenFrom = fromState
-                action = energyTransfer
-            }
+            isFrozen = true
+            frozenFrom = fromState
+            action = energyTransfer
         }
         
         stateMachine = StateOfMatter.Solid.stateMachine()
-        stateMachine.transitionHandler = transitionedToSolid
+        
+        let transitionManager = StateOfMatter.transitionManager()
+        transitionManager.handleTransition(toState: .Solid, transitionedToSolid)
+        stateMachine.transitionHandler = transitionManager.createHandler()
     }
     
     func testSingleTransition() {

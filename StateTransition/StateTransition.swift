@@ -3,7 +3,7 @@
 //  StateTransition
 //
 //  Created by Nicholas Cross on 7/11/2016.
-//  Copyright © 2016 Nicholas Cross. All rights reserved.
+//  Copyright © 2018 Nicholas Cross. All rights reserved.
 //
 import Foundation
 
@@ -19,6 +19,10 @@ public extension StateTransitionable {
         let builder = StateMachine<Action, Self, Context>.TransitionBuilder()
         Self.defineTransitions(builder)
         return StateMachine(initialState: self, transitions: builder.transitionsForState)
+    }
+    
+    static func transitionManager() -> StateMachine<Action, Self, Context>.TransitionManager {
+        return StateMachine<Action, Self, Context>.TransitionManager()
     }
 }
 
@@ -62,6 +66,34 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
                 var availableTransitions = StateTransitions()
                 availableTransitions[action] = toState
                 transitionsForState[fromState] = availableTransitions
+            }
+        }
+    }
+    
+    public class TransitionManager {
+        
+        private var toStateHandlers: [State: StateTransitionHandler] = [:]
+        private var fromStateHandlers: [State: StateTransitionHandler] = [:]
+        
+        public func handleTransition(toState: State, _ handler: @escaping StateTransitionHandler) {
+            toStateHandlers[toState] = handler
+        }
+        
+        public func handleTransition(fromState: State, _ handler: @escaping StateTransitionHandler) {
+            fromStateHandlers[fromState] = handler
+        }
+        
+        public func createHandler() -> StateTransitionHandler {
+            return handler
+        }
+        
+        private func handler(action: Action, fromState: State, toState: State, context: Context?) -> () {
+            if let handler = toStateHandlers[toState] {
+                handler(action, fromState, toState, context)
+            }
+            
+            if let handler = fromStateHandlers[fromState] {
+                handler(action, fromState, toState, context)
             }
         }
     }

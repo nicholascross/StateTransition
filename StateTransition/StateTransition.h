@@ -3,7 +3,7 @@
 //  StateTransition
 //
 //  Created by Nicholas Cross on 8/11/2016.
-//  Copyright © 2016 Nicholas Cross. All rights reserved.
+//  Copyright © 2018 Nicholas Cross. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

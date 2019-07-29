@@ -12,24 +12,24 @@ import XCTest
 private enum StateOfMatter: StateTransitionable {
     typealias Action = EnergyTransfer
     
-    case Solid
-    case Liquid
-    case Gas
-    case Plasma
+    case solid
+    case liquid
+    case gas
+    case plasma
     
     static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter, Any>.TransitionBuilder) {
-        stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
-        stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
-        stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
-        stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
-        stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
-        stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
+        stateMachine.addTransition(fromState: .solid, toState: .liquid, when: .increase)
+        stateMachine.addTransition(fromState: .liquid, toState: .gas, when: .increase)
+        stateMachine.addTransition(fromState: .gas, toState: .plasma, when: .increase)
+        stateMachine.addTransition(fromState: .plasma, toState: .gas, when: .decrease)
+        stateMachine.addTransition(fromState: .gas, toState: .liquid, when: .decrease)
+        stateMachine.addTransition(fromState: .liquid, toState: .solid, when: .decrease)
     }
 }
 
 private enum EnergyTransfer {
-    case Increase
-    case Decrease
+    case increase
+    case decrease
 }
 
 class StateTransitionTests: XCTestCase {
@@ -49,58 +49,56 @@ class StateTransitionTests: XCTestCase {
             action = energyTransfer
         }
         
-        stateMachine = StateOfMatter.Solid.stateMachine()
-        
-        let transitionManager = StateOfMatter.transitionManager()
-        transitionManager.handleTransition(toState: .Solid, transitionedToSolid)
-        stateMachine.transitionHandler = transitionManager.createHandler()
+        stateMachine = StateOfMatter.solid.stateMachine()
+
+        _ = stateMachine.handleTransition(to: .solid).sink(receiveValue: transitionedToSolid)
     }
     
     func testSingleTransition() {
-        stateMachine.perform(action: .Increase)
-        XCTAssert(stateMachine.currentState == .Liquid, "Expected to melt solid to liquid")
+        stateMachine.perform(action: .increase)
+        XCTAssert(stateMachine.currentState == .liquid, "Expected to melt solid to liquid")
     }
     
     func testAllTransitions() {
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        XCTAssert(stateMachine.currentState == .Plasma, "Expected to melt solid to plasma state")
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        XCTAssert(stateMachine.currentState == .plasma, "Expected to melt solid to plasma state")
         
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        XCTAssert(stateMachine.currentState == .Solid, "Expected to freeze plasma to solid state")
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        XCTAssert(stateMachine.currentState == .solid, "Expected to freeze plasma to solid state")
     }
     
     func testIgnoreInvalidTransitions() {
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        XCTAssert(stateMachine.currentState == .Plasma, "Expected to melt solid to plasma state")
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        XCTAssert(stateMachine.currentState == .plasma, "Expected to melt solid to plasma state")
         
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        XCTAssert(stateMachine.currentState == .Solid, "Expected to freeze plasma to solid state")
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        XCTAssert(stateMachine.currentState == .solid, "Expected to freeze plasma to solid state")
     }
     
     func testTransitionHandlerExecution() {
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Increase)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease)
-        stateMachine.perform(action: .Decrease, withContext: "It is cold.")
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease, withContext: "It is cold.")
         
         XCTAssert(isFrozen, "Expected to be frozen")
-        XCTAssert(frozenFrom == .Liquid, "Expected to be frozen from liquid state")
-        XCTAssert(action == .Decrease, "Expected to be frozen by decreasing energy")
+        XCTAssert(frozenFrom == .liquid, "Expected to be frozen from liquid state")
+        XCTAssert(action == .decrease, "Expected to be frozen by decreasing energy")
     }
 
 }

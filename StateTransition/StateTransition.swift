@@ -6,6 +6,7 @@
 //  Copyright © 2018 Nicholas Cross. All rights reserved.
 //
 import Foundation
+import Combine
 
 public protocol StateTransitionable: Hashable {
     associatedtype Action: Hashable
@@ -20,21 +21,17 @@ public extension StateTransitionable {
         Self.defineTransitions(builder)
         return StateMachine(initialState: self, transitions: builder.transitionsForState)
     }
-    
-    static func transitionManager() -> StateMachine<Action, Self, Context>.TransitionManager {
-        return StateMachine<Action, Self, Context>.TransitionManager()
-    }
 }
 
 public struct StateMachine<Action:Hashable, State:Hashable, Context> {
-    
-    public typealias StateTransitionHandler = (Action,State,State,Context?)->()
+    public typealias StateTransition = (Action,State,State,Context?)
     public typealias StateTransitions = [Action:State]
     
     private var state: State
     private let transitionsForState: [State:StateTransitions]
-    
-    public var transitionHandler: StateTransitionHandler? = nil
+
+    private let willTransition: PassthroughSubject<StateTransition, Never> = .init()
+    private let didTransition: PassthroughSubject<StateTransition, Never> = .init()
 
     init(initialState:State, transitions: [State:StateTransitions]) {
         self.state = initialState
@@ -45,9 +42,26 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
         let oldState = state
         
         if let availableTransitions = transitionsForState[oldState], let s = availableTransitions[action] {
+            willTransition.send((action, oldState, s, context))
             state = s
-            transitionHandler?(action, oldState, s, context)
+            didTransition.send((action, oldState, s, context))
         }
+    }
+
+    public func prepareForTransition() -> AnyPublisher<StateTransition, Never> {
+        return self.willTransition.eraseToAnyPublisher()
+    }
+
+    public func prepareForTransition(from state: State) -> AnyPublisher<StateTransition, Never> {
+        return self.willTransition.filter { state == $0.1 }.eraseToAnyPublisher()
+    }
+
+    public func handleTransition() -> AnyPublisher<StateTransition, Never> {
+        return self.didTransition.eraseToAnyPublisher()
+    }
+
+    public func handleTransition(to state: State) -> AnyPublisher<StateTransition, Never> {
+        return self.didTransition.filter { state == $0.2 }.eraseToAnyPublisher()
     }
     
     public var currentState: State {
@@ -66,34 +80,6 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
                 var availableTransitions = StateTransitions()
                 availableTransitions[action] = toState
                 transitionsForState[fromState] = availableTransitions
-            }
-        }
-    }
-    
-    public class TransitionManager {
-        
-        private var toStateHandlers: [State: StateTransitionHandler] = [:]
-        private var fromStateHandlers: [State: StateTransitionHandler] = [:]
-        
-        public func handleTransition(toState: State, _ handler: @escaping StateTransitionHandler) {
-            toStateHandlers[toState] = handler
-        }
-        
-        public func handleTransition(fromState: State, _ handler: @escaping StateTransitionHandler) {
-            fromStateHandlers[fromState] = handler
-        }
-        
-        public func createHandler() -> StateTransitionHandler {
-            return handler
-        }
-        
-        private func handler(action: Action, fromState: State, toState: State, context: Context?) -> () {
-            if let handler = toStateHandlers[toState] {
-                handler(action, fromState, toState, context)
-            }
-            
-            if let handler = fromStateHandlers[fromState] {
-                handler(action, fromState, toState, context)
             }
         }
     }

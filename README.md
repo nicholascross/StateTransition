@@ -39,7 +39,7 @@ func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState
 }
 
 var stateMachine = StateOfMatter.Solid.stateMachine()
-stateMachine.transitionHandler = transitionHandler
+_ = stateMachine.handleTransition().sink(receiveValue: transitionHandler)
 
 stateMachine.perform(action: .Increase)
 //prints: transitioned from Solid to Liquid as result of energy Increase - no context

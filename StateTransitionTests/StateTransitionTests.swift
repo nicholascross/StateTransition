@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Combine
 @testable import StateTransition
 
 private enum StateOfMatter: StateTransitionable {
@@ -36,17 +37,18 @@ class StateTransitionTests: XCTestCase {
     
     private var stateMachine : StateMachine<EnergyTransfer, StateOfMatter, Any>!
     
-    private var isFrozen = false
+    private var isFrozen: XCTestExpectation!
     private var frozenFrom: StateOfMatter!
     private var action: EnergyTransfer!
     
     override func setUp() {
         super.setUp()
         
+        isFrozen = XCTestExpectation()
         func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:Any) {
-            isFrozen = true
             frozenFrom = fromState
             action = energyTransfer
+            self.isFrozen.fulfill()
         }
         
         stateMachine = StateOfMatter.solid.stateMachine()
@@ -95,8 +97,8 @@ class StateTransitionTests: XCTestCase {
         stateMachine.perform(action: .decrease)
         stateMachine.perform(action: .decrease)
         stateMachine.perform(action: .decrease, withContext: "It is cold.")
-        
-        XCTAssert(isFrozen, "Expected to be frozen")
+
+        wait(for: [isFrozen], timeout: 0.2)
         XCTAssert(frozenFrom == .liquid, "Expected to be frozen from liquid state")
         XCTAssert(action == .decrease, "Expected to be frozen by decreasing energy")
     }

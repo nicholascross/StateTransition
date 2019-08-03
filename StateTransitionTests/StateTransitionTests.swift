@@ -40,20 +40,20 @@ class StateTransitionTests: XCTestCase {
     private var isFrozen: XCTestExpectation!
     private var frozenFrom: StateOfMatter!
     private var action: EnergyTransfer!
+    private var cancellable: AnyCancellable!
     
     override func setUp() {
         super.setUp()
-        
         isFrozen = XCTestExpectation()
         func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:Any) {
-            frozenFrom = fromState
-            action = energyTransfer
             self.isFrozen.fulfill()
+            self.frozenFrom = fromState
+            self.action = energyTransfer
         }
         
         stateMachine = StateOfMatter.solid.stateMachine()
 
-        _ = stateMachine.handleTransition(to: .solid).sink(receiveValue: transitionedToSolid)
+        self.cancellable = AnyCancellable(stateMachine.handleTransition(to: .solid).sink(receiveValue: transitionedToSolid))
     }
     
     func testSingleTransition() {

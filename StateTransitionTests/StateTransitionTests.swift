@@ -53,7 +53,7 @@ class StateTransitionTests: XCTestCase {
         
         stateMachine = StateOfMatter.solid.stateMachine()
 
-        self.cancellable = AnyCancellable(stateMachine.handleTransition(to: .solid).sink(receiveValue: transitionedToSolid))
+        self.cancellable = stateMachine.handleTransition(to: .solid).sink(receiveValue: transitionedToSolid)
     }
     
     func testSingleTransition() {

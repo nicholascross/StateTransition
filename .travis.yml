@@ -2,14 +2,27 @@ os:
   - osx
 language: swift
 osx_image: xcode11
-script:
-  - xcodebuild -enableCodeCoverage YES -scheme StateTransition-iOS -project StateTransition.xcodeproj -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8,OS=13.0' build test GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
-  - xcodebuild -scheme StateTransition-iOS -project StateTransition.xcodeproj -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8,OS=13.0' build test
-  - xcodebuild -scheme StateTransition-tvOS -project StateTransition.xcodeproj -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV,OS=11.0' build test
-  - xcodebuild -scheme StateTransition-macOS -project StateTransition.xcodeproj build test
-  - xcodebuild -scheme StateTransition-watchOS -project StateTransition.xcodeproj build
-  - gem install cocoapods --pre
-  - pod repo update --silent
-  - pod lib lint --allow-warnings
+stages:
+  - test
+  - coverage
+  - cocoapods
+jobs:
+  include:
+    - stage: test 
+      script: 
+        - xcodebuild -scheme StateTransition-iOS -project StateTransition.xcodeproj -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8,OS=13.0' build test
+        - xcodebuild -scheme StateTransition-tvOS -project StateTransition.xcodeproj -sdk appletvsimulator -destination 'platform=tvOS Simulator,name=Apple TV,OS=13.0' build test
+        # disabled: travis ci doesn't have macOS 10.15 support, this is required for Combine as it was moved out of xcode
+        # - xcodebuild -scheme StateTransition-macOS -project StateTransition.xcodeproj build test
+        - xcodebuild -scheme StateTransition-watchOS -project StateTransition.xcodeproj build
+    - stage: cocoapods
+      if: branch = master
+      script:
+        - gem install cocoapods --pre
+        - pod repo update --silent
+        - pod lib lint --allow-warnings
+    - stage: coverage
+      script: 
+        - xcodebuild -enableCodeCoverage YES -scheme StateTransition-iOS -project StateTransition.xcodeproj -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 8,OS=13.0' build test GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES GCC_GENERATE_TEST_COVERAGE_FILES=YES
 after_success:
   - bash <(curl -s https://codecov.io/bash)

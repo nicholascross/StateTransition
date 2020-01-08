@@ -44,7 +44,7 @@ class StateTransitionTests: XCTestCase {
         super.setUp()
         stateChanged = XCTestExpectation()
         actionSubject = PassthroughSubject<EnergyTransfer, Never>()
-        cancellable = StateOfMatter.solid.observe(actions: actionSubject.eraseToAnyPublisher()).sink(receiveValue: transitioned)
+        cancellable = StateOfMatter.solid.publishStateChanges(when: actionSubject.eraseToAnyPublisher()).sink(receiveValue: transitioned)
     }
     
     func testSingleTransition() {

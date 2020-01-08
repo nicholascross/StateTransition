@@ -22,7 +22,7 @@ public extension StateTransitionable {
         return StateMachine(initialState: self, transitions: builder.transitionsForState)
     }
 
-    func observe(actions: AnyPublisher<Action, Never>) -> AnyPublisher<(Action,Self,Self), Never> {
+    func publishStateChanges(when actions: AnyPublisher<Action, Never>) -> AnyPublisher<StateMachine<Action, Self>.StateTransition, Never> {
         var stateMachine: StateMachine = self.stateMachine()
 
         // Even though stateMachine is a value type when the value

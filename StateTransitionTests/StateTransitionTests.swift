@@ -18,7 +18,7 @@ private enum StateOfMatter: StateTransitionable {
     case gas
     case plasma
     
-    static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter, String>.TransitionBuilder) {
+    static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter>.TransitionBuilder) {
         stateMachine.addTransition(fromState: .solid, toState: .liquid, when: .increase)
         stateMachine.addTransition(fromState: .liquid, toState: .gas, when: .increase)
         stateMachine.addTransition(fromState: .gas, toState: .plasma, when: .increase)
@@ -37,7 +37,6 @@ class StateTransitionTests: XCTestCase {
     private var stateChanged: XCTestExpectation!
     private var currentState: StateOfMatter!
     private var action: EnergyTransfer!
-    private var context: String? = nil
     private var cancellable: AnyCancellable!
     private var actionSubject: PassthroughSubject<EnergyTransfer, Never>!
 
@@ -86,27 +85,9 @@ class StateTransitionTests: XCTestCase {
         XCTAssert(currentState == .solid, "Expected to freeze plasma to solid state")
     }
 
-    func testObservationWithContext() {
-        let actionInContextSubject = PassthroughSubject<(EnergyTransfer, String?), Never>()
-        cancellable = StateOfMatter.solid.observe(actionsInContext: actionInContextSubject.eraseToAnyPublisher()).sink(receiveValue: transitioned)
-
-        actionInContextSubject.send((.increase, nil))
-        actionInContextSubject.send((.increase, nil))
-        actionInContextSubject.send((.increase, nil))
-        actionInContextSubject.send((.decrease, nil))
-        actionInContextSubject.send((.decrease, nil))
-        actionInContextSubject.send((.decrease, "Its cold"))
-
-        wait(for: [stateChanged], timeout: 0.2)
-        XCTAssert(currentState == .solid, "Expected to be frozen from liquid state")
-        XCTAssert(action == .decrease, "Expected to be frozen by decreasing energy")
-        XCTAssertEqual(self.context, "Its cold")
-    }
-
-    fileprivate func transitioned(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:String?) {
+    fileprivate func transitioned(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter) {
         self.currentState = toState
         self.action = energyTransfer
-        self.context = context
         self.stateChanged.fulfill()
     }
 }

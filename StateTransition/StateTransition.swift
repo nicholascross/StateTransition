@@ -12,34 +12,29 @@ public protocol StateTransitionable: Hashable {
     associatedtype Action: Hashable
     associatedtype Context = Any
     
-    static func defineTransitions(_ stateMachine: StateMachine<Action, Self, Context>.TransitionBuilder)
+    static func defineTransitions(_ stateMachine: StateMachine<Action, Self>.TransitionBuilder)
 }
 
 public extension StateTransitionable {
-    private func stateMachine() -> StateMachine<Action, Self, Context> {
-        let builder = StateMachine<Action, Self, Context>.TransitionBuilder()
+    private func stateMachine() -> StateMachine<Action, Self> {
+        let builder = StateMachine<Action, Self>.TransitionBuilder()
         Self.defineTransitions(builder)
         return StateMachine(initialState: self, transitions: builder.transitionsForState)
     }
 
-    func observe(actions: AnyPublisher<Action, Never>) -> AnyPublisher<(Action,Self,Self,Context?), Never> {
-        return observe(actionsInContext: actions.map { ($0, nil as Context?) }.eraseToAnyPublisher())
-    }
-
-    func observe(actionsInContext actions: AnyPublisher<(Action, Context?), Never>) -> AnyPublisher<(Action,Self,Self,Context?), Never> {
+    func observe(actions: AnyPublisher<Action, Never>) -> AnyPublisher<(Action,Self,Self), Never> {
         var stateMachine: StateMachine = self.stateMachine()
 
         // Even though stateMachine is a value type when the value
         // is mutated it is changed in place which means it is possible to
         // mutate the value in an escaping closure; this seems to be
         // completely valid but is not necessarily expected (by myself)
-        return actions.compactMap { stateMachine.perform(action: $0.0, withContext: $0.1) }.eraseToAnyPublisher()
+        return actions.compactMap { stateMachine.perform(action: $0) }.eraseToAnyPublisher()
     }
-
 }
 
-public struct StateMachine<Action:Hashable, State:Hashable, Context> {
-    public typealias StateTransition = (Action,State,State,Context?)
+public struct StateMachine<Action:Hashable, State:Hashable> {
+    public typealias StateTransition = (Action,State,State)
     public typealias StateTransitions = [Action:State]
     
     private var state: State
@@ -52,12 +47,12 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
         self.transitionsForState = transitions
     }
 
-    mutating func perform(action:Action, withContext context: Context? = nil) -> StateTransition? {
+    mutating func perform(action:Action) -> StateTransition? {
         let oldState = state
         
         if let availableTransitions = transitionsForState[oldState], let s = availableTransitions[action] {
             state = s
-            return (action, oldState, s, context)
+            return (action, oldState, s)
         }
 
         return nil

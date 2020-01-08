@@ -19,7 +19,7 @@ enum StateOfMatter: StateTransitionable {
     case Gas
     case Plasma
     
-    static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter, String>.TransitionBuilder) {
+    static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter>.TransitionBuilder) {
         stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
         stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
         stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
@@ -34,17 +34,16 @@ enum EnergyTransfer {
     case Decrease
 }
 
-func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context: String?)->() {
-    print("transitioned from \(fromState) to \(toState) as result of energy \(action) - \(context ?? "no context")")
+func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter)->() {
+    print("transitioned from \(fromState) to \(toState) as result of energy \(action)")
 }
 
-var stateMachine = StateOfMatter.Solid.stateMachine()
-_ = stateMachine.handleTransition().sink(receiveValue: transitionHandler)
+let actionSubject = PassthroughSubject<EnergyTransfer, Never>()
+let stateChanges = StateOfMatter.Solid.observe(actions: actionSubject.eraseToAnyPublisher())
+let cancellable = stateChanges.sink(receiveValue: transitionHandler)
 
-stateMachine.perform(action: .Increase)
-//prints: transitioned from Solid to Liquid as result of energy Increase - no context
-stateMachine.perform(action: .Increase)
-//prints: transitioned from Liquid to Gas as result of energy Increase - no context
-stateMachine.perform(action: .Increase, withContext: "it is very hot")
-//prints: transitioned from Gas to Plasma as result of energy Increase - it is very hot
+actionSubject.send(.Increase)
+//prints: transitioned from Solid to Liquid as result of energy Increase
+actionSubject.send(.Increase)
+//prints: transitioned from Liquid to Gas as result of energy Increase
 ```

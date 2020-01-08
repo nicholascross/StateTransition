@@ -11,44 +11,58 @@ import Combine
 @testable import StateTransition
 
 class ReadmeExampleTests: XCTestCase {
- 
-    func testExample() {
-        enum StateOfMatter: StateTransitionable {
-            typealias Action = EnergyTransfer
-            typealias Context = String
-            
-            case Solid
-            case Liquid
-            case Gas
-            case Plasma
-            
-            static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter>.TransitionBuilder) {
-                stateMachine.addTransition(fromState: .Solid, toState: .Liquid, when: .Increase)
-                stateMachine.addTransition(fromState: .Liquid, toState: .Gas, when: .Increase)
-                stateMachine.addTransition(fromState: .Gas, toState: .Plasma, when: .Increase)
-                stateMachine.addTransition(fromState: .Plasma, toState: .Gas, when: .Decrease)
-                stateMachine.addTransition(fromState: .Gas, toState: .Liquid, when: .Decrease)
-                stateMachine.addTransition(fromState: .Liquid, toState: .Solid, when: .Decrease)
-            }
-        }
-        
-        enum EnergyTransfer {
-            case Increase
-            case Decrease
-        }
 
+    enum StateOfMatter: StateTransitionable {
+        typealias Action = EnergyTransfer
+        typealias Context = String
+
+        case solid
+        case liquid
+        case gas
+        case plasma
+
+        static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter>.TransitionBuilder) {
+            stateMachine.addTransition(fromState: .solid, toState: .liquid, when: .increase)
+            stateMachine.addTransition(fromState: .liquid, toState: .gas, when: .increase)
+            stateMachine.addTransition(fromState: .gas, toState: .plasma, when: .increase)
+            stateMachine.addTransition(fromState: .plasma, toState: .gas, when: .decrease)
+            stateMachine.addTransition(fromState: .gas, toState: .liquid, when: .decrease)
+            stateMachine.addTransition(fromState: .liquid, toState: .solid, when: .decrease)
+        }
+    }
+
+    enum EnergyTransfer {
+        case increase
+        case decrease
+    }
+
+    func testExample() {
+        var stateMachine = StateOfMatter.solid.stateMachine()
+
+        guard let transition = stateMachine.perform(action: .increase) else {
+            return
+        }
+        print("transitioned from \(transition.1) to \(transition.2) as result of energy \(transition.0)")
+        //prints: transitioned from solid to liquid as result of energy increase
+
+        stateMachine.perform(action: .increase)
+        print("current state is \(stateMachine.currentState)")
+        //prints: current state is gas
+    }
+
+    func testExampleCombine() {
         func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter)->() {
             print("transitioned from \(fromState) to \(toState) as result of energy \(action)")
         }
 
         let actionSubject = PassthroughSubject<EnergyTransfer, Never>()
-        let stateChanges = StateOfMatter.Solid.publishStateChanges(when: actionSubject.eraseToAnyPublisher())
+        let stateChanges = StateOfMatter.solid.publishStateChanges(when: actionSubject.eraseToAnyPublisher())
         let cancellable = stateChanges.sink(receiveValue: transitionHandler)
 
-        actionSubject.send(.Increase)
-        //prints: transitioned from Solid to Liquid as result of energy Increase
-        actionSubject.send(.Increase)
-        //prints: transitioned from Liquid to Gas as result of energy Increase
+        actionSubject.send(.increase)
+        //prints: transitioned from solid to liquid as result of energy increase
+        actionSubject.send(.increase)
+        //prints: transitioned from liquid to gas as result of energy increase
     }
     
 }

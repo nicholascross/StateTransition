@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Combine
 @testable import StateTransition
 
 class ReadmeExampleTests: XCTestCase {
@@ -39,15 +40,16 @@ class ReadmeExampleTests: XCTestCase {
         func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context: String?)->() {
             print("transitioned from \(fromState) to \(toState) as result of energy \(action) - \(context ?? "no context")")
         }
-        
-        var stateMachine = StateOfMatter.Solid.stateMachine()
-        _ = stateMachine.handleTransition().sink(receiveValue: transitionHandler)
 
-        stateMachine.perform(action: .Increase)
+        let actionSubject = PassthroughSubject<EnergyTransfer, Never>()
+        let stateChanges = StateOfMatter.Solid.observe(actions: actionSubject.eraseToAnyPublisher())
+        let cancellable = stateChanges.sink(receiveValue: transitionHandler)
+
+        actionSubject.send(.Increase)
         //prints: transitioned from Solid to Liquid as result of energy Increase - no context
-        stateMachine.perform(action: .Increase)
+        actionSubject.send(.Increase)
         //prints: transitioned from Liquid to Gas as result of energy Increase - no context
-        stateMachine.perform(action: .Increase, withContext: "it is very hot")
+//        actionSubject.send(action: .Increase, withContext: "it is very hot")
         //prints: transitioned from Gas to Plasma as result of energy Increase - it is very hot
     }
     

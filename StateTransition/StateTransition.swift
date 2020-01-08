@@ -16,7 +16,7 @@ public protocol StateTransitionable: Hashable {
 }
 
 public extension StateTransitionable {
-    func stateMachine() -> StateMachine<Action, Self, Context> {
+    private func stateMachine() -> StateMachine<Action, Self, Context> {
         let builder = StateMachine<Action, Self, Context>.TransitionBuilder()
         Self.defineTransitions(builder)
         return StateMachine(initialState: self, transitions: builder.transitionsForState)
@@ -29,16 +29,13 @@ public extension StateTransitionable {
     func observe(actionsInContext actions: AnyPublisher<(Action, Context?), Never>) -> AnyPublisher<(Action,Self,Self,Context?), Never> {
         var stateMachine: StateMachine = self.stateMachine()
 
-        let cancellable = actions.sink { latest in
-            // Even though stateMachine is a value type when the value
-            // is mutated it is changed in place which means it is possible to
-            // mutate the value in an escaping closure; this seems to be
-            // completely valid but is not necessarily expected (by myself)
-            stateMachine.perform(action: latest.0, withContext: latest.1)
-        }
-
-        return stateMachine.handleTransition().obviateCancellation(cancellable)
+        // Even though stateMachine is a value type when the value
+        // is mutated it is changed in place which means it is possible to
+        // mutate the value in an escaping closure; this seems to be
+        // completely valid but is not necessarily expected (by myself)
+        return actions.compactMap { stateMachine.perform(action: $0.0, withContext: $0.1) }.eraseToAnyPublisher()
     }
+
 }
 
 public struct StateMachine<Action:Hashable, State:Hashable, Context> {
@@ -48,7 +45,6 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
     private var state: State
     private let transitionsForState: [State:StateTransitions]
 
-    private let willTransition: PassthroughSubject<StateTransition, Never> = .init()
     private let didTransition: PassthroughSubject<StateTransition, Never> = .init()
 
     init(initialState:State, transitions: [State:StateTransitions]) {
@@ -56,33 +52,22 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
         self.transitionsForState = transitions
     }
 
-    public mutating func perform(action:Action, withContext context: Context? = nil) {
+    mutating func perform(action:Action, withContext context: Context? = nil) -> StateTransition? {
         let oldState = state
         
         if let availableTransitions = transitionsForState[oldState], let s = availableTransitions[action] {
-            willTransition.send((action, oldState, s, context))
             state = s
-            didTransition.send((action, oldState, s, context))
+            return (action, oldState, s, context)
         }
+
+        return nil
     }
 
-    public func prepareForTransition() -> AnyPublisher<StateTransition, Never> {
-        return self.willTransition.eraseToAnyPublisher()
-    }
-
-    public func prepareForTransition(from state: State) -> AnyPublisher<StateTransition, Never> {
-        return self.willTransition.filter { state == $0.1 }.eraseToAnyPublisher()
-    }
-
-    public func handleTransition() -> AnyPublisher<StateTransition, Never> {
+    func handleTransition() -> AnyPublisher<StateTransition, Never> {
         return self.didTransition.eraseToAnyPublisher()
     }
 
-    public func handleTransition(to state: State) -> AnyPublisher<StateTransition, Never> {
-        return self.didTransition.filter { state == $0.2 }.eraseToAnyPublisher()
-    }
-    
-    public var currentState: State {
+    var currentState: State {
         return state
     }
     
@@ -100,18 +85,5 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
                 transitionsForState[fromState] = availableTransitions
             }
         }
-    }
-}
-
-private extension AnyPublisher {
-    //fixme: remove/replace this if possible
-    func obviateCancellation(_ cancellable: AnyCancellable) -> AnyPublisher<Output, Failure> {
-        return self.map { t in
-            // This seems slightly dumb so there is probably a better way
-            // to avoid early cancellation or more preciesly I am just going
-            // about this completely wrong.
-            let _ = cancellable
-            return t
-        }.eraseToAnyPublisher()
     }
 }

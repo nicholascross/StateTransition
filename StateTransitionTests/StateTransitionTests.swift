@@ -18,7 +18,7 @@ private enum StateOfMatter: StateTransitionable {
     case gas
     case plasma
     
-    static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter, Any>.TransitionBuilder) {
+    static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter, String>.TransitionBuilder) {
         stateMachine.addTransition(fromState: .solid, toState: .liquid, when: .increase)
         stateMachine.addTransition(fromState: .liquid, toState: .gas, when: .increase)
         stateMachine.addTransition(fromState: .gas, toState: .plasma, when: .increase)
@@ -35,25 +35,19 @@ private enum EnergyTransfer {
 
 class StateTransitionTests: XCTestCase {
     
-    private var stateMachine : StateMachine<EnergyTransfer, StateOfMatter, Any>!
+    private var stateMachine : StateMachine<EnergyTransfer, StateOfMatter, String>!
     
     private var isFrozen: XCTestExpectation!
     private var frozenFrom: StateOfMatter!
     private var action: EnergyTransfer!
+    private var context: String? = nil
     private var cancellable: AnyCancellable!
     
     override func setUp() {
         super.setUp()
         isFrozen = XCTestExpectation()
-        func transitionedToSolid(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:Any) {
-            self.isFrozen.fulfill()
-            self.frozenFrom = fromState
-            self.action = energyTransfer
-        }
-        
         stateMachine = StateOfMatter.solid.stateMachine()
-
-        self.cancellable = stateMachine.handleTransition(to: .solid).sink(receiveValue: transitionedToSolid)
+        self.cancellable = stateMachine.handleTransition(to: .solid).sink(receiveValue: transitioned)
     }
     
     func testSingleTransition() {
@@ -101,6 +95,48 @@ class StateTransitionTests: XCTestCase {
         wait(for: [isFrozen], timeout: 0.2)
         XCTAssert(frozenFrom == .liquid, "Expected to be frozen from liquid state")
         XCTAssert(action == .decrease, "Expected to be frozen by decreasing energy")
+    }
+
+    func testObservation() {
+        let actionSubject = PassthroughSubject<EnergyTransfer, Never>()
+
+        cancellable = StateOfMatter.solid.observe(actions: actionSubject.eraseToAnyPublisher()).sink(receiveValue: transitioned)
+
+        actionSubject.send(.increase)
+        actionSubject.send(.increase)
+        actionSubject.send(.increase)
+        actionSubject.send(.decrease)
+        actionSubject.send(.decrease)
+        actionSubject.send(.decrease)
+
+        wait(for: [isFrozen], timeout: 0.2)
+        XCTAssert(frozenFrom == .liquid, "Expected to be frozen from liquid state")
+        XCTAssert(action == .decrease, "Expected to be frozen by decreasing energy")
+    }
+
+    func testObservationWithContext() {
+        let actionSubject = PassthroughSubject<(EnergyTransfer, String?), Never>()
+
+        cancellable = StateOfMatter.solid.observe(actionsInContext: actionSubject.eraseToAnyPublisher()).sink(receiveValue: transitioned)
+
+        actionSubject.send((.increase, nil))
+        actionSubject.send((.increase, nil))
+        actionSubject.send((.increase, nil))
+        actionSubject.send((.decrease, nil))
+        actionSubject.send((.decrease, nil))
+        actionSubject.send((.decrease, "Its cold"))
+
+        wait(for: [isFrozen], timeout: 0.2)
+        XCTAssert(frozenFrom == .liquid, "Expected to be frozen from liquid state")
+        XCTAssert(action == .decrease, "Expected to be frozen by decreasing energy")
+        XCTAssertEqual(self.context, "Its cold")
+    }
+
+    fileprivate func transitioned(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter, context:String?) {
+        self.isFrozen.fulfill()
+        self.frozenFrom = fromState
+        self.action = energyTransfer
+        self.context = context
     }
 
 }

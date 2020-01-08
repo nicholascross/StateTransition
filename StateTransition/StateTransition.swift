@@ -21,6 +21,24 @@ public extension StateTransitionable {
         Self.defineTransitions(builder)
         return StateMachine(initialState: self, transitions: builder.transitionsForState)
     }
+
+    func observe(actions: AnyPublisher<Action, Never>) -> AnyPublisher<(Action,Self,Self,Context?), Never> {
+        return observe(actionsInContext: actions.map { ($0, nil as Context?) }.eraseToAnyPublisher())
+    }
+
+    func observe(actionsInContext actions: AnyPublisher<(Action, Context?), Never>) -> AnyPublisher<(Action,Self,Self,Context?), Never> {
+        var stateMachine: StateMachine = self.stateMachine()
+
+        let cancellable = actions.sink { latest in
+            // Even though stateMachine is a value type when the value
+            // is mutated it is changed in place which means it is possible to
+            // mutate the value in an escaping closure; this seems to be
+            // completely valid but is not necessarily expected (by myself)
+            stateMachine.perform(action: latest.0, withContext: latest.1)
+        }
+
+        return stateMachine.handleTransition().obviateCancellation(cancellable)
+    }
 }
 
 public struct StateMachine<Action:Hashable, State:Hashable, Context> {
@@ -37,7 +55,7 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
         self.state = initialState
         self.transitionsForState = transitions
     }
-    
+
     public mutating func perform(action:Action, withContext context: Context? = nil) {
         let oldState = state
         
@@ -82,5 +100,18 @@ public struct StateMachine<Action:Hashable, State:Hashable, Context> {
                 transitionsForState[fromState] = availableTransitions
             }
         }
+    }
+}
+
+private extension AnyPublisher {
+    //fixme: remove/replace this if possible
+    func obviateCancellation(_ cancellable: AnyCancellable) -> AnyPublisher<Output, Failure> {
+        return self.map { t in
+            // This seems slightly dumb so there is probably a better way
+            // to avoid early cancellation or more preciesly I am just going
+            // about this completely wrong.
+            let _ = cancellable
+            return t
+        }.eraseToAnyPublisher()
     }
 }

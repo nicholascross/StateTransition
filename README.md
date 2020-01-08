@@ -39,7 +39,7 @@ func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState
 }
 
 let actionSubject = PassthroughSubject<EnergyTransfer, Never>()
-let stateChanges = StateOfMatter.Solid.observe(actions: actionSubject.eraseToAnyPublisher())
+let stateChanges = StateOfMatter.Solid.publishStateChanges(when: actionSubject.eraseToAnyPublisher())
 let cancellable = stateChanges.sink(receiveValue: transitionHandler)
 
 actionSubject.send(.Increase)

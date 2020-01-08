@@ -47,7 +47,7 @@ public struct StateMachine<Action:Hashable, State:Hashable> {
         self.transitionsForState = transitions
     }
 
-    public mutating func perform(action:Action) -> StateTransition? {
+    @discardableResult public mutating func perform(action:Action) -> StateTransition? {
         let oldState = state
         
         if let availableTransitions = transitionsForState[oldState], let s = availableTransitions[action] {

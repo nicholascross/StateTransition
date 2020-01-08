@@ -16,7 +16,7 @@ public protocol StateTransitionable: Hashable {
 }
 
 public extension StateTransitionable {
-    private func stateMachine() -> StateMachine<Action, Self> {
+    func stateMachine() -> StateMachine<Action, Self> {
         let builder = StateMachine<Action, Self>.TransitionBuilder()
         Self.defineTransitions(builder)
         return StateMachine(initialState: self, transitions: builder.transitionsForState)
@@ -47,7 +47,7 @@ public struct StateMachine<Action:Hashable, State:Hashable> {
         self.transitionsForState = transitions
     }
 
-    mutating func perform(action:Action) -> StateTransition? {
+    public mutating func perform(action:Action) -> StateTransition? {
         let oldState = state
         
         if let availableTransitions = transitionsForState[oldState], let s = availableTransitions[action] {
@@ -62,7 +62,7 @@ public struct StateMachine<Action:Hashable, State:Hashable> {
         return self.didTransition.eraseToAnyPublisher()
     }
 
-    var currentState: State {
+    public var currentState: State {
         return state
     }
     

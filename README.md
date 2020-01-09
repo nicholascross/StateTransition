@@ -44,13 +44,14 @@ func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState
     print("transitioned from \(fromState) to \(toState) as result of energy \(action)")
 }
 
-let actionSubject = PassthroughSubject<EnergyTransfer, Never>()
-let stateChanges = StateOfMatter.solid.publishStateChanges(when: actionSubject.eraseToAnyPublisher())
+let energyTransfer = PassthroughSubject<EnergyTransfer, Never>()
+let stateChanges = StateOfMatter.solid.publishStateChanges(when: energyTransfer.eraseToAnyPublisher())
 let cancellable = stateChanges.sink(receiveValue: transitionHandler)
 
-actionSubject.send(.increase)
+energyTransfer.send(.increase)
 //prints: transitioned from solid to liquid as result of energy increase
-actionSubject.send(.increase)
+
+energyTransfer.send(.increase)
 //prints: transitioned from liquid to gas as result of energy increase
 ```
 

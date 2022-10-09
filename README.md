@@ -11,7 +11,6 @@ A declaritive swift state machine.
 ```swift
 enum StateOfMatter: StateTransitionable {
     typealias Action = EnergyTransfer
-    typealias Context = String
 
     case solid
     case liquid

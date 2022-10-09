@@ -5,7 +5,6 @@ class ReadmeExampleTests: XCTestCase {
 
     enum StateOfMatter: StateTransitionable {
         typealias Action = EnergyTransfer
-        typealias Context = String
 
         case solid
         case liquid

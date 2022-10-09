@@ -3,7 +3,7 @@ import Foundation
 public protocol StateTransitionable: Hashable {
     typealias Transitions = StateMachine<Action, Self>.TransitionBuilder
     associatedtype Action: Hashable
-    
+
     @TransitionBuilder
     var transitions: Transitions { get }
 }

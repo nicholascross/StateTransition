@@ -1,23 +1,23 @@
 import Foundation
 
-public struct StateMachine<Action:Hashable, State:Hashable> {
-    public typealias StateTransition = (Action,State,State)
-    public typealias StateTransitions = [Action:State]
-    
-    private var state: State
-    private let transitionsForState: [State:StateTransitions]
+public struct StateMachine<Action: Hashable, State: Hashable> {
+    public typealias StateTransition = (Action, State, State)
+    public typealias StateTransitions = [Action: State]
 
-    init(initialState:State, transitions: [State:StateTransitions]) {
-        self.state = initialState
-        self.transitionsForState = transitions
+    private var state: State
+    private let transitionsForState: [State: StateTransitions]
+
+    init(initialState: State, transitions: [State: StateTransitions]) {
+        state = initialState
+        transitionsForState = transitions
     }
 
-    @discardableResult public mutating func perform(action:Action) -> StateTransition? {
-        let oldState = state
-        
-        if let availableTransitions = transitionsForState[oldState], let s = availableTransitions[action] {
-            state = s
-            return (action, oldState, s)
+    @discardableResult public mutating func perform(action: Action) -> StateTransition? {
+        let priorState = state
+
+        if let availableTransitions = transitionsForState[priorState], let nextState = availableTransitions[action] {
+            state = nextState
+            return (action, priorState, nextState)
         }
 
         return nil
@@ -26,16 +26,15 @@ public struct StateMachine<Action:Hashable, State:Hashable> {
     public var currentState: State {
         return state
     }
-    
+
     public class TransitionBuilder {
-        var transitionsForState: [State:StateTransitions] = [:]
-        
-        public func addTransition(fromState:State, toState:State, when action:Action) {
-            if var availableTransitions = self.transitionsForState[fromState] {
+        var transitionsForState: [State: StateTransitions] = [:]
+
+        public func addTransition(fromState: State, toState: State, when action: Action) {
+            if var availableTransitions = transitionsForState[fromState] {
                 availableTransitions[action] = toState
                 transitionsForState[fromState] = availableTransitions
-            }
-            else {
+            } else {
                 var availableTransitions = StateTransitions()
                 availableTransitions[action] = toState
                 transitionsForState[fromState] = availableTransitions

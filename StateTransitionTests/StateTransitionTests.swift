@@ -1,14 +1,14 @@
-import XCTest
 @testable import StateTransition
+import XCTest
 
 private enum StateOfMatter: StateTransitionable {
     typealias Action = EnergyTransfer
-    
+
     case solid
     case liquid
     case gas
     case plasma
-    
+
     var transitions: Transitions {
         when(.increase) {
             transition(from: .solid, to: .liquid)
@@ -37,24 +37,24 @@ class StateTransitionTests: XCTestCase {
         super.setUp()
         stateMachine = StateOfMatter.solid.stateMachine()
     }
-    
+
     func testSingleTransition() {
         stateMachine.perform(action: .increase)
         XCTAssert(stateMachine.currentState == .liquid, "Expected to melt solid to liquid")
     }
-    
+
     func testAllTransitions() {
         stateMachine.perform(action: .increase)
         stateMachine.perform(action: .increase)
         stateMachine.perform(action: .increase)
         XCTAssert(stateMachine.currentState == .plasma, "Expected to melt solid to plasma state")
-        
+
         stateMachine.perform(action: .decrease)
         stateMachine.perform(action: .decrease)
         stateMachine.perform(action: .decrease)
         XCTAssert(stateMachine.currentState == .solid, "Expected to freeze plasma to solid state")
     }
-    
+
     func testIgnoreInvalidTransitions() {
         stateMachine.perform(action: .increase)
         stateMachine.perform(action: .increase)

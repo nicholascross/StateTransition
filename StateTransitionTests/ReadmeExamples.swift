@@ -1,8 +1,7 @@
-import XCTest
 @testable import StateTransition
+import XCTest
 
 class ReadmeExampleTests: XCTestCase {
-
     enum StateOfMatter: StateTransitionable {
         typealias Action = EnergyTransfer
 
@@ -37,12 +36,12 @@ class ReadmeExampleTests: XCTestCase {
             // no transition occured
             return
         }
-        
+
         print("transitioned from \(transition.1) to \(transition.2) as result of energy \(transition.0)")
-        //prints: transitioned from solid to liquid as result of energy increase
+        // prints: transitioned from solid to liquid as result of energy increase
 
         stateMachine.perform(action: .increase)
         print("current state is \(stateMachine.currentState)")
-        //prints: current state is gas
+        // prints: current state is gas
     }
 }

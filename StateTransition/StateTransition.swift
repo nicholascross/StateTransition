@@ -3,14 +3,13 @@
 //  StateTransition
 //
 //  Created by Nicholas Cross on 7/11/2016.
-//  Copyright © 2018 Nicholas Cross. All rights reserved.
+//  Copyright © 2022 Nicholas Cross. All rights reserved.
 //
 import Foundation
 import Combine
 
 public protocol StateTransitionable: Hashable {
     associatedtype Action: Hashable
-    associatedtype Context = Any
     
     static func defineTransitions(_ stateMachine: StateMachine<Action, Self>.TransitionBuilder)
 }
@@ -24,11 +23,6 @@ public extension StateTransitionable {
 
     func publishStateChanges(when actions: AnyPublisher<Action, Never>) -> AnyPublisher<StateMachine<Action, Self>.StateTransition, Never> {
         var stateMachine: StateMachine = self.stateMachine()
-
-        // Even though stateMachine is a value type when the value
-        // is mutated it is changed in place which means it is possible to
-        // mutate the value in an escaping closure; this seems to be
-        // completely valid but is not necessarily expected (by myself)
         return actions.compactMap { stateMachine.perform(action: $0) }.eraseToAnyPublisher()
     }
 }

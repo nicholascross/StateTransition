@@ -21,13 +21,17 @@ enum StateOfMatter: StateTransitionable {
     case gas
     case plasma
 
-    static func defineTransitions(_ stateMachine: StateMachine<EnergyTransfer, StateOfMatter>.TransitionBuilder) {
-        stateMachine.addTransition(fromState: .solid, toState: .liquid, when: .increase)
-        stateMachine.addTransition(fromState: .liquid, toState: .gas, when: .increase)
-        stateMachine.addTransition(fromState: .gas, toState: .plasma, when: .increase)
-        stateMachine.addTransition(fromState: .plasma, toState: .gas, when: .decrease)
-        stateMachine.addTransition(fromState: .gas, toState: .liquid, when: .decrease)
-        stateMachine.addTransition(fromState: .liquid, toState: .solid, when: .decrease)
+    var transitions: StateMachine<EnergyTransfer, StateOfMatter>.TransitionBuilder {
+        when(.increase) {
+            transition(from: .solid, to: .liquid)
+            transition(from: .liquid, to: .gas)
+            transition(from: .gas, to: .plasma)
+        }
+        when(.decrease) {
+            transition(from: .plasma, to: .gas)
+            transition(from: .gas, to: .liquid)
+            transition(from: .liquid, to: .solid)
+        }
     }
 }
 

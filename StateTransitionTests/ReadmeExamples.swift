@@ -12,7 +12,7 @@ class ReadmeExampleTests: XCTestCase {
         case gas
         case plasma
 
-        var transitions: StateMachine<EnergyTransfer, StateOfMatter>.TransitionBuilder {
+        var transitions: Transitions {
             when(.increase) {
                 transition(from: .solid, to: .liquid)
                 transition(from: .liquid, to: .gas)

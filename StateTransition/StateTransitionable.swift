@@ -1,10 +1,11 @@
 import Foundation
 
 public protocol StateTransitionable: Hashable {
+    typealias Transitions = StateMachine<Action, Self>.TransitionBuilder
     associatedtype Action: Hashable
     
     @TransitionBuilder
-    var transitions: StateMachine<Action, Self>.TransitionBuilder { get }
+    var transitions: Transitions { get }
 }
 
 public extension StateTransitionable {

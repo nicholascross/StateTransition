@@ -37,7 +37,7 @@ class ReadmeExampleTests: XCTestCase {
             return
         }
 
-        print("transitioned from \(transition.1) to \(transition.2) as result of energy \(transition.0)")
+        print("transitioned from \(transition.from) to \(transition.to) as result of energy \(transition.action)")
         // prints: transitioned from solid to liquid as result of energy increase
 
         stateMachine.perform(action: .increase)

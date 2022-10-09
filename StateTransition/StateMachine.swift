@@ -1,7 +1,7 @@
 import Foundation
 
 public struct StateMachine<Action: Hashable, State: Hashable> {
-    public typealias StateTransition = (Action, State, State)
+    public typealias StateTransition = (action: Action, from: State, to: State)
     public typealias StateTransitions = [Action: State]
 
     private var state: State

@@ -1,5 +1,4 @@
 import XCTest
-import Combine
 @testable import StateTransition
 
 class ReadmeExampleTests: XCTestCase {
@@ -36,8 +35,10 @@ class ReadmeExampleTests: XCTestCase {
         var stateMachine = StateOfMatter.solid.stateMachine()
 
         guard let transition = stateMachine.perform(action: .increase) else {
+            // no transition occured
             return
         }
+        
         print("transitioned from \(transition.1) to \(transition.2) as result of energy \(transition.0)")
         //prints: transitioned from solid to liquid as result of energy increase
 
@@ -45,21 +46,4 @@ class ReadmeExampleTests: XCTestCase {
         print("current state is \(stateMachine.currentState)")
         //prints: current state is gas
     }
-
-    func testExampleCombine() {
-        func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter)->() {
-            print("transitioned from \(fromState) to \(toState) as result of energy \(action)")
-        }
-
-        let energyTransfer = PassthroughSubject<EnergyTransfer, Never>()
-        let stateChanges = StateOfMatter.solid.publishStateChanges(when: energyTransfer.eraseToAnyPublisher())
-        let cancellable = stateChanges.sink(receiveValue: transitionHandler)
-
-        energyTransfer.send(.increase)
-        //prints: transitioned from solid to liquid as result of energy increase
-
-        energyTransfer.send(.increase)
-        //prints: transitioned from liquid to gas as result of energy increase
-    }
-    
 }

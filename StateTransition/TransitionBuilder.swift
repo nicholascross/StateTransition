@@ -22,7 +22,9 @@ public struct WhenBuilder {
 
 public struct When<Action: Hashable, State: Hashable>  {
     let action: Action
-    @WhenBuilder let transitions: [Transition<State>]
+    
+    @WhenBuilder
+    let transitions: [Transition<State>]
 }
 
 public struct Transition<State: Hashable> {

@@ -7,7 +7,7 @@
 ![Swift 5.1.x](https://img.shields.io/badge/Swift-5.0.x-orange.svg) 
 ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20OS%20X%20%7C%20watchOS%20%7C%20tvOS%20-lightgrey.svg)
 
-A swift state machine supporting; states, transitions, actions and transition handling via Combine.
+A declaritive swift state machine.
 
 ## State machine definition
 
@@ -41,36 +41,20 @@ enum EnergyTransfer {
 }
 ```
 
-## Example with Combine
+## Example
 
 ```swift
-func transitionHandler(action: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter)->() {
-    print("transitioned from \(fromState) to \(toState) as result of energy \(action)")
-}
+    var stateMachine = StateOfMatter.solid.stateMachine()
 
-let energyTransfer = PassthroughSubject<EnergyTransfer, Never>()
-let stateChanges = StateOfMatter.solid.publishStateChanges(when: energyTransfer.eraseToAnyPublisher())
-let cancellable = stateChanges.sink(receiveValue: transitionHandler)
+    guard let transition = stateMachine.perform(action: .increase) else {
+        // no transition occured
+        return
+    }
+    
+    print("transitioned from \(transition.1) to \(transition.2) as result of energy \(transition.0)")
+    //prints: transitioned from solid to liquid as result of energy increase
 
-energyTransfer.send(.increase)
-//prints: transitioned from solid to liquid as result of energy increase
-
-energyTransfer.send(.increase)
-//prints: transitioned from liquid to gas as result of energy increase
-```
-
-## Example without Combine
-
-```swift
-var stateMachine = StateOfMatter.solid.stateMachine()
-
-guard let transition = stateMachine.perform(action: .increase) else {
-    return
-}
-print("transitioned from \(transition.1) to \(transition.2) as result of energy \(transition.0)")
-//prints: transitioned from solid to liquid as result of energy increase
-
-stateMachine.perform(action: .increase)
-print("current state is \(stateMachine.currentState)")
-//prints: current state is gas
+    stateMachine.perform(action: .increase)
+    print("current state is \(stateMachine.currentState)")
+    //prints: current state is gas
 ```

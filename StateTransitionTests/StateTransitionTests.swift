@@ -1,5 +1,4 @@
 import XCTest
-import Combine
 @testable import StateTransition
 
 private enum StateOfMatter: StateTransitionable {
@@ -30,60 +29,47 @@ private enum EnergyTransfer {
 }
 
 class StateTransitionTests: XCTestCase {
-    private var stateChanged: XCTestExpectation!
     private var currentState: StateOfMatter!
     private var action: EnergyTransfer!
-    private var cancellable: AnyCancellable!
-    private var actionSubject: PassthroughSubject<EnergyTransfer, Never>!
+    private var stateMachine: StateMachine<EnergyTransfer, StateOfMatter>!
 
     override func setUp() {
         super.setUp()
-        stateChanged = XCTestExpectation()
-        actionSubject = PassthroughSubject<EnergyTransfer, Never>()
-        cancellable = StateOfMatter.solid.publishStateChanges(when: actionSubject.eraseToAnyPublisher()).sink(receiveValue: transitioned)
+        stateMachine = StateOfMatter.solid.stateMachine()
     }
     
     func testSingleTransition() {
-        actionSubject.send(.increase)
-        wait(for: [stateChanged], timeout: 0.2)
-        XCTAssert(currentState == .liquid, "Expected to melt solid to liquid")
+        stateMachine.perform(action: .increase)
+        XCTAssert(stateMachine.currentState == .liquid, "Expected to melt solid to liquid")
     }
     
     func testAllTransitions() {
-        actionSubject.send(.increase)
-        actionSubject.send(.increase)
-        actionSubject.send(.increase)
-        XCTAssert(currentState == .plasma, "Expected to melt solid to plasma state")
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        XCTAssert(stateMachine.currentState == .plasma, "Expected to melt solid to plasma state")
         
-        actionSubject.send(.decrease)
-        actionSubject.send(.decrease)
-        actionSubject.send(.decrease)
-        XCTAssert(currentState == .solid, "Expected to freeze plasma to solid state")
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        XCTAssert(stateMachine.currentState == .solid, "Expected to freeze plasma to solid state")
     }
     
     func testIgnoreInvalidTransitions() {
-        actionSubject.send(.increase)
-        actionSubject.send(.increase)
-        actionSubject.send(.increase)
-        actionSubject.send(.increase)
-        actionSubject.send(.increase)
-        actionSubject.send(.increase)
-        wait(for: [stateChanged], timeout: 0.2)
-        XCTAssert(currentState == .plasma, "Expected to melt solid to plasma state")
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        stateMachine.perform(action: .increase)
+        XCTAssert(stateMachine.currentState == .plasma, "Expected to melt solid to plasma state")
 
-        stateChanged = XCTestExpectation()
-        actionSubject.send(.decrease)
-        actionSubject.send(.decrease)
-        actionSubject.send(.decrease)
-        actionSubject.send(.decrease)
-        actionSubject.send(.decrease)
-        wait(for: [stateChanged], timeout: 0.2)
-        XCTAssert(currentState == .solid, "Expected to freeze plasma to solid state")
-    }
-
-    fileprivate func transitioned(energyTransfer: EnergyTransfer, fromState: StateOfMatter, toState: StateOfMatter) {
-        self.currentState = toState
-        self.action = energyTransfer
-        self.stateChanged.fulfill()
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        stateMachine.perform(action: .decrease)
+        XCTAssert(stateMachine.currentState == .solid, "Expected to freeze plasma to solid state")
     }
 }

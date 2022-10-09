@@ -1,7 +1,7 @@
 # StateTransition
 [![nicholascross](https://circleci.com/gh/nicholascross/StateTransition.svg?style=svg)](https://app.circleci.com/pipelines/github/nicholascross/StateTransition)
 [![GitHub release](https://img.shields.io/github/release/nicholascross/StateTransition.svg)](https://github.com/nicholascross/StateTransition/releases) 
-![Swift 5.1.x](https://img.shields.io/badge/Swift-5.0.x-orange.svg) 
+![Swift 5.1.x](https://img.shields.io/badge/Swift-5-orange.svg) 
 ![platforms](https://img.shields.io/badge/platforms-iOS%20%7C%20macOS%20%7C%20watchOS%20%7C%20tvOS%20-lightgrey.svg)
 
 A declaritive swift state machine.

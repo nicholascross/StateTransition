@@ -1,5 +1,5 @@
 # StateTransition
-![build status](https://travis-ci.org/nicholascross/StateTransition.svg?branch=master)
+[![nicholascross](https://circleci.com/gh/nicholascross/StateTransition.svg?style=svg)](https://app.circleci.com/pipelines/github/nicholascross/StateTransition)
 ![code coverage](https://img.shields.io/codecov/c/github/nicholascross/StateTransition.svg)
 [![GitHub release](https://img.shields.io/github/release/nicholascross/StateTransition.svg)](https://github.com/nicholascross/StateTransition/releases) 
 ![Swift 5.1.x](https://img.shields.io/badge/Swift-5.0.x-orange.svg) 

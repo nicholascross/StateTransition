@@ -6,7 +6,7 @@
 
 A declaritive swift state machine.
 
-## State machine definition
+## Example state machine definition
 
 ```swift
 enum StateOfMatter: StateTransitionable {
@@ -37,7 +37,7 @@ enum EnergyTransfer {
 }
 ```
 
-## Example
+## Example state machine usage
 
 ```swift
     var stateMachine = StateOfMatter.solid.stateMachine()

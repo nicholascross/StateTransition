@@ -54,3 +54,20 @@ enum EnergyTransfer {
     print("current state is \(stateMachine.currentState)")
     //prints: current state is gas
 ```
+
+## Example of state observation
+
+```swift
+    class Example {
+        var stateMachine = StateOfMatter.solid.stateMachine() {
+            didSet {
+                print("current state is \(stateMachine.currentState)")
+            }
+        }
+    }
+
+    let example = Example()
+    example.stateMachine.perform(action: .increase)
+    // prints: current state is liquid
+    example.stateMachine.perform(action: .increase)
+``` 

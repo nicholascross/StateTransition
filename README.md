@@ -70,4 +70,5 @@ enum EnergyTransfer {
     example.stateMachine.perform(action: .increase)
     // prints: current state is liquid
     example.stateMachine.perform(action: .increase)
+    // prints: current state is gas
 ``` 

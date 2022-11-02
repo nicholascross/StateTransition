@@ -33,11 +33,11 @@ public struct Transition<State: Hashable> {
 }
 
 extension StateTransitionable {
-    func when(_ action: Action, @WhenBuilder _ transitions: () -> [Transition<Self>]) -> When<Action, Self> {
+    public func when(_ action: Action, @WhenBuilder _ transitions: () -> [Transition<Self>]) -> When<Action, Self> {
         When(action: action, transitions: transitions)
     }
 
-    func transition(from: Self, to: Self) -> Transition<Self> {
+    public func transition(from: Self, to: Self) -> Transition<Self> {
         Transition(from: from, to: to)
     }
 }
